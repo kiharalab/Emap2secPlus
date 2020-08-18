@@ -27,7 +27,7 @@ Xiao Wang, Eman Alnabati, Tunde W Aderinwale, Sai Raghavendra Maddhuri Venkata S
 }   
 ```
 
-## Online platform: http://kiharalab.org/emap2sec+/
+## Project website: http://kiharalab.org/emsuites/emap2secplus.php
 
 ## Introduction
 An increasing number of density maps of macromolecular structures, including proteins and protein and DNA/RNA complexes, have been determined by cryo-electron microscopy (cryo-EM). Although lately maps at a near-atomic resolution are routinely reported, there are still a substantial fractions of maps determined at intermediate or low resolutions, where extracting structure information is not trivial. Here, we report a new computational method, Emap2sec+, which identifies DNA or RNA as well as the secondary structures of proteins in cryo-EM maps of 5 to 10 Å resolution. Emap2sec+ employs the ResNet convolutional deep neural network. To guide structure modeling in an EM map, it assigns structural labels with associated probabilities at each voxel in a cryo-EM map. An accuracy of over 60% was observed when tested on datasets of simulated maps at 6 Å and 10 Å as well as real maps determined in this resolution range. 

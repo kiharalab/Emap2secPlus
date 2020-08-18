@@ -1,0 +1,263 @@
+# Emap2sec+
+<a href="https://github.com/marktext/marktext/releases/latest">
+   <img src="https://img.shields.io/badge/Emap2sec-v2.0.0-green">
+   <img src="https://img.shields.io/badge/platform-Linux%20%7C%20Mac%20-green">
+   <img src="https://img.shields.io/badge/Language-python3-green">
+   <img src="https://img.shields.io/badge/Language-C-green">
+   <img src="https://img.shields.io/badge/dependencies-tested-green">
+   <img src="https://img.shields.io/badge/licence-GNU-green">
+</a>           
+
+Emap2sec+ is a computational tool using deep learning that can accurately identify structures, alpha helices, beta sheets, other(coils/turns) and DNA/RNA, in cryo-Electron Microscopy (EM) maps of medium to low resolution.  
+
+Copyright (C) 2020 Xiao Wang, Eman Alnabati, Tunde W Aderinwale, Sai Raghavendra Maddhuri, Genki Terashi, Daisuke Kihara, and Purdue University. 
+
+License: GPL v3 for academic use. (For commercial use, please contact us for different licensing.)
+
+Contact: Daisuke Kihara (dkihara@purdue.edu)
+
+## Citation:
+Xiao Wang, Eman Alnabati, Tunde W Aderinwale, Sai Raghavendra Maddhuri Venkata Subramaniya, Genki Terashi & Daisuke Kihara.Emap2sec+: Structure Detection in Intermediate Resolution Cryo-EM Maps Using Deep Learning (2020).
+```
+@article{wang2020emap2secplus,   
+  title={Emap2sec+: Detecting Protein and DNA Structures in cryo-EM maps of intermediate Resolution Using Deep Learning},   
+  author={Xiao Wang, Eman Alnabati, Tunde W Aderinwale, Sai Raghavendra Maddhuri Venkata Subramaniya, Genki Terashi, and Daisuke Kihara},    
+  journal={BioRxiv},    
+  year={2020}    
+}   
+```
+
+## Online platform: http://kiharalab.org/emap2sec+/
+
+## Introduction
+An increasing number of density maps of macromolecular structures, including proteins and protein and DNA/RNA complexes, have been determined by cryo-electron microscopy (cryo-EM). Although lately maps at a near-atomic resolution are routinely reported, there are still a substantial fractions of maps determined at intermediate or low resolutions, where extracting structure information is not trivial. Here, we report a new computational method, Emap2sec+, which identifies DNA or RNA as well as the secondary structures of proteins in cryo-EM maps of 5 to 10 Å resolution. Emap2sec+ employs the ResNet convolutional deep neural network. To guide structure modeling in an EM map, it assigns structural labels with associated probabilities at each voxel in a cryo-EM map. An accuracy of over 80% was observed when tested on datasets of simulated maps at 6 Å and 10 Å as well as real maps determined in this resolution range. 
+
+## Overall Protocal
+```
+(1) Preprocess cryo-EM map (*.mrc format;including remove density outside the contour level and change the grid size to 1);
+(2) Scan EM map to get voxel input and corrsponding locations and save it in *.trimmap file;
+(3) Generate *.input file which includes formatted 3D input for Network;
+(4) Apply Phase1 Network and Phase2 Network to assign labels for each voxels and save the predictions in *pred.txt;
+(5) Output *.pdb and *.pml file to visualize predictions;
+(6) Output the evaluation report in *report.txt (if with PDB structure).
+```
+<p align="center">
+  <img src="figures/protocol.jpeg" alt="protocol" width="80%">
+</p> 
+
+## Overall Network Framework
+<p align="center">
+  <img src="figures/Framework.jpeg" alt="framework" width="80%">
+</p> 
+
+### Network Framework consists of 4 steps:   
+
+```
+(1) Apply binary-class model and multi-class model to obtain predicted probabilities for each voxel;
+(2) Concatenate probability values from different models to have 8 probability values for each voxel;
+(3) Apply Phase 2 network to utilize the neighboring predicted probabilities from phase 1 to further classify each voxel;
+(4) Output the final predictions for each voxel.
+```
+
+### Phase 1 Network Architecture
+<p align="center">
+  <img src="figures/Net1.jpg" alt="phase1 network" width="80%">
+</p> 
+
+### Phase 2 Network Architecture
+<p align="center">
+  <img src="figures/Net2.jpg" alt="phase2 network" width="80%">
+</p> 
+
+## Pre-required software
+Python 3 : https://www.python.org/downloads/    
+pdb2vol (for generating simulated maps): https://situs.biomachina.org/fguide.html   
+Pymol(for visualiztion): https://pymol.org/2/        
+
+## Installation  
+### 1. [`Install git`](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) 
+### 2. Clone the repository in your computer (__`git clone git@github.com:kiharalab/Emap2sec+.git && cd Emap2sec+`__)
+### 3. Build dependencies.   
+You have two options to install dependency on your computer:
+#### 3.1 Install with pip
+##### 3.1.1[`install pip`](https://pip.pypa.io/en/stable/installing/).
+##### 3.1.2  Install dependency in command line.
+```
+pip3 install -r requirements.txt --user
+```
+If you encounter any errors, you can install each library one by one:
+```
+pip3 install mrcfile==1.1.2
+pip3 install numpy==1.18.5
+pip3 install numba==0.50.0
+pip3 install torch==1.1.0
+pip3 install scipy==1.4.1
+```
+
+#### 3.2 Install with anaconda
+##### 3.2.1 [`install conda`](https://docs.conda.io/projects/conda/en/latest/user-guide/install/macos.html). 
+##### 3.2.2 Install dependency in command line
+```
+conda create -n Emap python=3.6.9
+conda activate Emap
+pip install -r requirements.txt 
+```
+Each time when you want to run my code, simply activate the environment by
+```
+conda activate Emap
+conda deactivate(If you want to exit) 
+```
+
+## Usage
+```
+python3 main.py -h:
+  -h, --help            show this help message and exit
+  -F F                  map path
+  --mode MODE           0: Predict structures for EM Map 
+                        1: Predict and evaluate structures for EM map with pdb structure
+                        2: Predict structure for experimental maps with 4 fold models
+                        3: Predict and evaluate structure for experimental maps with 4 fold models
+  --resize              0: resizing maps with numba optimized (some maps size are not supported); 
+                        1: resizing maps with scipy (relatively slow but support almost all maps).
+  -P P                  native structure path (PDB format) for evaluating model's performance
+  --type TYPE           0:simulated map at 6 Å 1: simulated map at 10 Å 2:simulated map at 6-10 Å 3:experimental map
+  --gpu GPU             gpu id choose for training
+  --class CLASS         number of classes
+  --batch_size BATCH_SIZE batch size for training
+  --contour CONTOUR     Contour level for real map
+  --fold FOLD           specify the fold model used for predicting the experimental map
+```
+
+### 1. Predict structures with EM maps
+```
+python3 main.py --mode=0 -F=[Map_path] --type=[Map_Type] --gpu=0 --class=4 --contour=[contour_level] --fold=[Choose_Fold]
+```
+Here [Map_path] is the cryo EM mrc file path in your computer. [Map_Type] should be specified based on your input map type, which will be used to load proper pre-trained model. [contour_level] and [Choose_Fold] should only be specified for experimental maps.          
+Output will be saved in "Predict_Result/[Map_Type]/[Input_Map_Name]". 
+--resize=1 sometimes needs to be specified if your map's grid size is smaller than 1. Our default faster resizing script based on numba only supports interpolation for maps with grid size>1.
+### 2. Predict and evaluate EM maps
+```
+python3 main.py --mode=1 -F=[Map_path] -P=[PDB_path] --type=[Map_Type] --gpu=0 --class=4 --contour=[contour_level] --fold=[Choose_Fold]
+```
+Here [PDB_path] is the PDB file path for your structure. All other parameters should follow the same rule in --mode=0.     
+Output will be saved in "Predict_Result_WithPDB/[Map_Type]/[Input_Map_Name]". 
+
+### 3. Predict structure for experimental maps with 4 fold models
+```
+python3 main.py --mode=2 -F=[Map_path] --type=3 --gpu=0 --class=4 --contour=[contour_level]
+```    
+The backend program will automatically call 4 fold models to predict and aggregate the final predictions by majority vote of 4 models. Output will be saved in "Predict_Result_WithPDB/REAL/[Input_Map_Name]". 
+
+### 4. Predict and evaluate structure for experimental maps with 4 fold models
+```
+python3 main.py --mode=3 -F=[Map_path] -P=[PDB_path] --type=3 --gpu=0 --class=4 --contour=[contour_level] 
+```
+The backend program will automatically call 4 fold models to predict and aggregate the final predictions by majority vote of 4 models. Also, the individual evaluation and combined evaluation will be automatically executed by Emap2sec+. Output will be saved in "Predict_Result_WithPDB/REAL/[Input_Map_Name]". 
+
+## Example
+
+### Input File
+Cryo-EM map with mrc format. 
+
+### Output File
+1 *.mrc: Reformed map file with grid size=1;   
+2 *.trimmap: Pre-process file with voxel information, corresponding coordinates and Residue ID (if with PDB structure).   
+3 *.stride: (Optional) Stride output file, include the secondary structure assignment label for each residue.   
+4 *.input: Model's input file, include voxel density values and structure label (if with PDB structure).   
+5 *pred.txt: records Model's output for each voxel. Format: [coordinate pred_label pred_prob_value] in each line.  
+6 *.pdb: records voxel coordinates and predicted labels for visualization.   
+7 *.pml: Visualization script for predictions. Please use **pymol -u *.pml** to visualize our prediction.
+
+
+### Simulated map example (10Å resolution)
+#### 1 Emap2sec+ prediction
+Cammand line
+```
+python3 main.py --mode=0 -F=test_example/SIMU10/5T5K.mrc --type=1 --gpu=0 --class=4 
+```
+If the map grid size is smaller than 1, you also need to specify –-resize=1 in the command line, which will be slower compared to the default mode. The example input map is included in [5T5K](test_example/SIMU10).Our detailed results are saved in [5T5K_Prediction](predict_example/SIMU10).
+
+#### 2 Visualize Result
+Results are saved in Predict_Result/SIMU10/[Input_Map_Name]. Phase 1 and Phase 2 visualization results are saved in “Phase1” and “Phase2” sub-directory, respectively. *.pml files will be generated for you to visualize. Please use “pymol -u *.pml” to visualize the final structures. Also, for confident predictions, you can check by “pymol -u *C.pml” in another visualization file named "*C.pml" which only includes confident predictions with predicted probability>=0.9.
+
+#### 3 Evaluation Performance
+Command line:
+```
+python3 main.py --mode=1 -F=test_example/SIMU10/5T5K.mrc -P=test_example/SIMU10/5t5k.pdb --type=1 --gpu=0 --class=4 
+```
+In the Predict_Result_WithPDB/SIMU10/[Input_Map_Name], our evaluation report will be saved in *_report.txt. Here is an example of our evaluation report of 5T5K.
+<p align="center">
+  <img src="figures/5T5K_report.png" alt="5T5K report" width="50%">
+</p> 
+
+#### 4 Visulization
+<p align="center">
+  <img src="figures/5T5K_map.png" title="Map" width="30%" ><img src="figures/5T5K_structure.png" title="Structure" width="30%"><img src="figures/5T5K_pred.png" title="Prediction" width="30%">
+</p> 
+
+<p align="center">
+  <img src="figures/5T5K_alpha.png" title="Alpha Prediction" width="30%" ><img src="figures/5T5K_beta.png" title="Beta Prediction" width="30%"><img src="figures/5T5K_drna.png" title="DNA/RNA Prediction" width="30%">
+</p> 
+
+### Experimental map example
+#### 1 Emap2sec+ Prediction
+Cammand line:
+```
+python3 main.py --mode=0 -F=test_example/REAL/6BJS.mrc --type=3 --gpu=0 --class=4 --fold=3 -–contour=0.006 
+```
+If the map grid size is smaller than 1, you also need to specify --resize=1 in the command line, which will be slower compared to the default mode. The example input map is [6BJS](test_example/REAL), which is in the fold 3 testing dataset.Our detailed results are saved in [6BJS_Prediction](predict_example/REAL).
+
+#### 2 Visualize Result
+Results are saved in Predict_Result/REAL/Fold3_Model_Result/[Input_Map_Name]. Phase 1 and Phase 2 visualization results are saved in “Phase1” and “Phase2” sub-directory, respectively. *.pml files will be generated for you to visualize. Please use “pymol -u *.pml” to visualize the final structures. Also, for confident predictions, you can check by “pymol -u *C.pml” in another visualization file which only includes confident predictions with predicted probability>=0.9.
+
+#### 3 Evaluation Performance
+Command line:
+```
+python3 main.py --mode=1 -F=test_example/REAL/6BJS.mrc -P=test_example/REAL/6bjs.pdb  --type=3  --gpu=0 --class=4 -–fold=3 -–contour=0.006
+```
+In the Predict_Result_WithPDB/REAL/Fold3_Model_Result/[Input_Map_Name], our evaluation report will be saved in *_report.txt. Here is an example of our evaluation report of 6BJS.
+<p align="center">
+  <img src="figures/6BJS_report.png" alt="6BJS report" width="50%">
+</p> 
+
+#### 4 Visulization
+
+<p align="center">
+  <img src="figures/6BJS_map.png" title="Map" width="30%" ><img src="figures/6BJS_structure.png" title="Structure" width="30%"><img src="figures/6BJS_pred.png" title="Prediction" width="30%">
+</p> 
+
+<p align="center">
+  <img src="figures/6BJS_alpha.png" title="Alpha Prediction" width="30%" ><img src="figures/6BJS_beta.png" title="Beta Prediction" width="30%"><img src="figures/6BJS_drna.png" title="DNA/RNA Prediction" width="30%">
+</p> 
+
+### Experimental map example with majority vote
+### \*Recommended when applying Emap2sec+ for experimental maps\*
+#### 1 Emap2sec+ Prediction
+Cammand line:
+```
+python3 main.py --mode=2 -F=test_example/REAL_Vote/5WCB.mrc --type=3 --gpu=0 --class=4 -–contour=0.0332
+```
+If the map grid size is smaller than 1, you also need to specify --resize=1 in the command line, which will be slower compared to the default mode. The example input map is [5WCB](test_example/REAL_Vote), which is a previous example in Emap2sec paper. This example also proves our method can work on EM maps without DNA/RNA.Our detailed results are saved in [Real_Vote](predict_example/REAL_Vote).
+
+#### 2 Visualize Result
+Results are saved in Predict_Result/REAL/[Input_Map_Name]. Final visualization results are saved in “FINAL”. *.pml files will be generated for you to visualize. Please use “pymol -u *.pml” to visualize the final structures. Also, for confident predictions, you can check by “pymol -u *C.pml” in another visualization file which only includes confident predictions with predicted probability>=0.9.
+
+#### 3 Evaluation Performance
+Command line:
+```
+python3 main.py --mode=3 -F=test_example/REAL_Vote/5WCB.mrc -P=test_example/REAL_Vote/5wcb.pdb --type=3  --gpu=0 --class=4 -–contour=0.0332
+```
+In the Predict_Result_WithPDB/REAL/[Input_Map_Name], our evaluation report will be saved in *_report.txt. Here is an example of our evaluation report of 5WCB.
+<p align="center">
+  <img src="figures/5WCB_report.png" alt="5WCB report" width="50%">
+</p> 
+
+#### 4 Visulization
+
+<p align="center">
+  <img src="figures/5WCB_map.png" title="Map" width="30%" ><img src="figures/5WCB_structure.png" title="Structure" width="30%"><img src="figures/5WCB_pred.png" title="Prediction" width="30%">
+</p> 
+
+<p align="center">
+  <img src="figures/5WCB_alpha.png" title="Alpha Prediction" width="30%" ><img src="figures/5WCB_beta.png" title="Beta Prediction" width="30%"><img src="figures/5WCB_drna.png" title="DNA/RNA Prediction" width="30%">
+</p> 

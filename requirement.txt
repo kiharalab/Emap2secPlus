@@ -1,0 +1,5 @@
+mrcfile==1.1.2
+numpy==1.18.5
+numba==0.50.0
+torch==1.1.0
+scipy==1.4.1

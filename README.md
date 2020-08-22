@@ -17,10 +17,11 @@ License: GPL v3 for academic use. (For commercial use, please contact us for dif
 Contact: Daisuke Kihara (dkihara@purdue.edu)
 
 ## Citation:
-Xiao Wang, Eman Alnabati, Tunde W Aderinwale, Sai Raghavendra Maddhuri Venkata Subramaniya, Genki Terashi & Daisuke Kihara.Emap2sec+: Structure Detection in Intermediate Resolution Cryo-EM Maps Using Deep Learning (2020).
+
+Xiao Wang, Eman Alnabati, Tunde W Aderinwale, Sai Raghavendra Maddhuri Venkata Subramaniya, Genki Terashi & Daisuke Kihara.Emap2sec+:  Detecting Protein and DNA/RNA Structures in Cryo-EM Maps of Intermediate Resolution Using Deep Learning (2020).
 ```
 @article{wang2020emap2secplus,   
-  title={Emap2sec+: Detecting Protein and DNA Structures in cryo-EM maps of intermediate Resolution Using Deep Learning},   
+  title={Emap2sec+:  Detecting Protein and DNA/RNA Structures in Cryo-EM Maps of Intermediate Resolution Using Deep Learning},   
   author={Xiao Wang, Eman Alnabati, Tunde W Aderinwale, Sai Raghavendra Maddhuri Venkata Subramaniya, Genki Terashi, and Daisuke Kihara},    
   journal={BioRxiv},    
   year={2020}    

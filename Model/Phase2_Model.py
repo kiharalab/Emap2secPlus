@@ -12,9 +12,7 @@
 
 # it under the terms of the GNU General Public License as published by
 
-# the Free Software Foundation, either version 3 of the License, or
-
-# (at your option) any later version.
+# the Free Software Foundation, version 3.
 
 #
 
@@ -31,6 +29,7 @@
 # You should have received a copy of the GNU v3.0 General Public License
 
 # along with this program.  If not, see https://www.gnu.org/licenses/gpl-3.0.en.html.
+
 
 import torch
 from torch import nn

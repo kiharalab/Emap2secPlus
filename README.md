@@ -186,7 +186,7 @@ Cryo-EM map with mrc format.
 
 ### Simulated map example (10Å resolution)
 #### 1 Emap2sec+ Detection
-Cammand line
+Command line
 ```
 python3 main.py --mode=0 -F=test_example/SIMU10/5T5K.mrc --type=1 --gpu=0 --class=4 
 ```
@@ -219,7 +219,7 @@ Here the precision is the fraction of correct predicted structures among the spe
 
 ### Experimental map example
 #### 1 Emap2sec+ Detection
-Cammand line:
+Command line:
 ```
 python3 main.py --mode=0 -F=test_example/REAL/6BJS.mrc --type=3 --gpu=0 --class=4 --fold=3 -–contour=0.006 
 ```

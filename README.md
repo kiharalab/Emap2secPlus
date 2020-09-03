@@ -206,6 +206,8 @@ In the Predict_Result_WithPDB/SIMU10/[Input_Map_Name], our evaluation report wil
   <img src="figures/5T5K_report.png" alt="5T5K report" width="50%">
 </p> 
 
+Here the precision is the fraction of correct predicted structures among the specific pedicted structure, while recall (also known as sensitivity) is the fraction of the total amount of the specific structure that were actually retrieved. The F1 score is the harmonic mean of the precision and recall. The support is the number of voxels with the structure lable. Here the macro measurement means macro-averaging(taking all classes as equally important), while the micro means mirco-avearging (biased by class frequency).
+
 #### 4 Visulization
 <p align="center">
   <img src="figures/5T5K_map.png" title="Map" width="30%" ><img src="figures/5T5K_structure.png" title="Structure" width="30%"><img src="figures/5T5K_pred.png" title="Prediction" width="30%">
@@ -236,6 +238,8 @@ In the Predict_Result_WithPDB/REAL/Fold3_Model_Result/[Input_Map_Name], our eval
 <p align="center">
   <img src="figures/6BJS_report.png" alt="6BJS report" width="50%">
 </p> 
+
+Here the precision is the fraction of correct predicted structures among the specific pedicted structure, while recall (also known as sensitivity) is the fraction of the total amount of the specific structure that were actually retrieved. The F1 score is the harmonic mean of the precision and recall. The support is the number of voxels with the structure lable. Here the macro measurement means macro-averaging(taking all classes as equally important), while the micro means mirco-avearging (biased by class frequency).
 
 #### 4 Visulization
 
@@ -270,6 +274,7 @@ In the Predict_Result_WithPDB/REAL/[Input_Map_Name], our evaluation report will 
   <img src="figures/5WCB_report.png" alt="5WCB report" width="50%">
 </p> 
 
+Here the precision is the fraction of correct predicted structures among the specific pedicted structure, while recall (also known as sensitivity) is the fraction of the total amount of the specific structure that were actually retrieved. The F1 score is the harmonic mean of the precision and recall. The support is the number of voxels with the structure lable. Here the macro measurement means macro-averaging(taking all classes as equally important), while the micro means mirco-avearging (biased by class frequency).
 #### 4 Visulization
 
 <p align="center">

@@ -145,43 +145,42 @@ python3 main.py -h:
 ```
 python3 main.py --mode=0 -F=[Map_path] --type=[Map_Type] --gpu=0 --class=4 --contour=[contour_level] --fold=[Choose_Fold]
 ```
-Here [Map_path] is the cryo EM mrc file path in your computer. [Map_Type] should be specified based on your input map type, which will be used to load proper pre-trained model. [contour_level] and [Choose_Fold] should only be specified for experimental maps.          
-Output will be saved in "Predict_Result/[Map_Type]/[Input_Map_Name]". 
---resize=1 sometimes needs to be specified if your map's grid size is smaller than 1. Our default faster resizing script based on numba only supports interpolation for maps with grid size>1.
-### 2. Detect and evaluate EM maps (when native structure is avilable)
-##### This mode can not be used in real scenarios since native structure will not be available. We usually used the mode to evaluate Emap2sec+ performance on testing dataset to verify its performance. This can be used when native structures are provided to evaluate Emap2sec+ detection performance. Meanwhile, this can be also used to measure the difference of our detected structure with structure assigned by experimental researchers. 
+Here [Map_path] is the cryo EM mrc file path in your computer. [Map_Type] should be specified based on your input map type, which will be used to load proper pre-trained model. [contour_level] and [Choose_Fold] only need to be specified for experimental maps.             
+Output will be saved in "Predict_Result/[Map_Type]/[Input_Map_Name]".       
+If the map grid size is smaller than 1, you also need to specify –-resize=1 to resize the grid size in the command line. This will make the program run slower than the default mode. 
+### 2. Evaluate Performance (only when the correct underlined structure in the map is known)
+#### In the case that you are testing the software with a case, you can check the accuracy of the structure detection by Emap2sec+ by comparing the result with the known structure. This mode cannot be used in real scenarios where the native structure is not available. We usually use the mode to evaluate Emap2sec+ performance on testing dataset with known structures to verify its performance. This mode is also useful to measure the difference of the detected structure by Emap2sec+ with the structure currently assigned to the EM map.
 ```
 python3 main.py --mode=1 -F=[Map_path] -P=[PDB_path] --type=[Map_Type] --gpu=0 --class=4 --contour=[contour_level] --fold=[Choose_Fold]
 ```
-Here [PDB_path] is the PDB file path for your structure. All other parameters should follow the same rule in --mode=0.     
+Here [PDB_path] is the PDB file path for known structure. All other parameters should follow the same rule in --mode=0.     
 Output will be saved in "Predict_Result_WithPDB/[Map_Type]/[Input_Map_Name]". 
 
-### 3. Detect structure for experimental maps with 4 fold models
+### 3. Detect structure for experimental maps with 4 fold networks
 ```
 python3 main.py --mode=2 -F=[Map_path] --type=3 --gpu=0 --class=4 --contour=[contour_level]
 ```    
-The backend program will automatically call 4 fold models and aggregate the final detection probabilities by majority vote of 4 models. Output will be saved in "Predict_Result_WithPDB/REAL/[Input_Map_Name]". 
+The backend program will automatically call 4 fold networks and aggregate the final detection probabilities by majority vote of 4 networks. Output will be saved in "Predict_Result_WithPDB/REAL/[Input_Map_Name]". 
 
 ### 4. Detect and evaluate structure for experimental maps with 4 fold models
-##### This mode can not be used in real scenarios since native structure will not be available. We usually used the mode to evaluate Emap2sec+ performance on testing dataset to verify its performance. This can be used when native structures are provided to evaluate Emap2sec+ detection performance. Meanwhile, this can be also used to measure the difference of our detected structure with structure assigned by experimental researchers. 
+#### In the case that you are testing the software with a case, you can check the accuracy of the structure detection by Emap2sec+ by comparing the result with the known structure. This mode cannot be used in real scenarios where the native structure is not available. We usually use the mode to evaluate Emap2sec+ performance on testing dataset with known structures to verify its performance. This mode is also useful to measure the difference of the detected structure by Emap2sec+ with the structure currently assigned to the EM map.
 ```
 python3 main.py --mode=3 -F=[Map_path] -P=[PDB_path] --type=3 --gpu=0 --class=4 --contour=[contour_level] 
 ```
-The backend program will automatically call 4 fold models and aggregate the final detection probabilities by majority vote of 4 models. Also, the individual evaluation and combined evaluation will be automatically executed by Emap2sec+. Output will be saved in "Predict_Result_WithPDB/REAL/[Input_Map_Name]". 
+The backend program will automatically call 4 fold networks and aggregate the final detection probabilities by majority vote of 4 networks. Also, the individual evaluation and combined evaluation will be automatically executed by Emap2sec+. Output will be saved in "Predict_Result_WithPDB/REAL/[Input_Map_Name]". 
 
 ## Example
 
 ### Input File
 Cryo-EM map with mrc format. 
 
-### Output File
-1 *.mrc: Reformed map file with grid size=1;   
-2 *.trimmap: Pre-process file with voxel information, corresponding coordinates and Residue ID (if with PDB structure).   
-3 *.stride: (Optional) Stride output file, include the secondary structure assignment label for each residue.   
-4 *.input: Model's input file, include voxel density values and structure label (if with PDB structure).   
-5 *pred.txt: records Model's output for each voxel. Format: [coordinate pred_label pred_prob_value] in each line.  
-6 *.pdb: records voxel coordinates and detected labels for visualization.   
-7 *.pml: Visualization script for detection results. Please use **pymol -u *.pml** to visualize our detection results.
+### Output File 
+1 *pred.txt: A text file that records detected structure labels by Emap2sec+ for each voxel. Format: [coordinate pred_label pred_prob_value] in each line.  
+2 *.pdb: PDB file that records voxel coordinates and detected structure labels for visualization.  
+3 *.pml: Pymol script for visualizing detected structures. Please use the following command in pymol to visualize the detection results.
+```
+pymol -u *.pml
+```
 
 
 ### Simulated map example (10Å resolution)
@@ -190,13 +189,14 @@ Command line
 ```
 python3 main.py --mode=0 -F=test_example/SIMU10/5T5K.mrc --type=1 --gpu=0 --class=4 
 ```
-If the map grid size is smaller than 1, you also need to specify –-resize=1 in the command line, which will be slower compared to the default mode. The example input map is included in [5T5K](https://github.rcac.purdue.edu/kiharalab/Emap2secPlus/tree/master/test_example/SIMU10).Our detailed results are saved in [5T5K_Result](https://github.rcac.purdue.edu/kiharalab/Emap2secPlus/tree/master/predict_example/SIMU10).
+If the map grid size is smaller than 1, you also need to specify –-resize=1 to resize the grid size in the command line. This will make the command run slower than the default mode. The example input map is included in [5T5K](https://github.rcac.purdue.edu/kiharalab/Emap2secPlus/tree/master/test_example/SIMU10).Our detailed results are saved in [5T5K_Result](https://github.rcac.purdue.edu/kiharalab/Emap2secPlus/tree/master/predict_example/SIMU10).
 
 #### 2 Visualize Result
-Results are saved in Predict_Result/SIMU10/[Input_Map_Name]. Phase 1 and Phase 2 visualization results are saved in “Phase1” and “Phase2” sub-directory, respectively. *.pml files will be generated for you to visualize. Please use “pymol -u *.pml” to visualize the final structures. Also, for confident detection results, you can check by “pymol -u *C.pml” in another visualization file named "*C.pml" which only includes confident detection areas with probability>=0.9.
+Results are saved in Predict_Result/SIMU10/[Input_Map_Name]. Phase 1 and Phase 2 visualization results (Pymol sessions) are saved in “Phase1” and “Phase2” sub-directory, respectively. You will find generated *.pml files generated to visualize. Please use “pymol -u *.pml” to visualize the final structure detection result. If you want to only see very confident detection results, run “pymol -u *C.pml” using another visualization file named "*C.pml", which only includes confident detections with a probability>=0.9.
 
-#### 3 Detect and Evaluate Performance
-##### This mode can not be used in real scenarios since native structure will not be available. We usually used the mode to evaluate Emap2sec+ performance on testing dataset to verify its performance. This can be used when native structures are provided to evaluate Emap2sec+ detection performance. Meanwhile, this can be also used to measure the difference of our detected structure with structure assigned by experimental researchers. 
+#### 3 Evaluate Performance(only when the correct underlined structure in the map is known)
+
+#####  In the case that you are testing the software with a case, you can check the accuracy of the structure detection by Emap2sec+ by comparing the result with the known structure. This mode cannot be used in real scenarios where the native structure is not available. We usually use the mode to evaluate Emap2sec+ performance on testing dataset with known structures to verify its performance. This mode is also useful to measure the difference of the detected structure by Emap2sec+ with the structure currently assigned to the EM map.
 Command line:
 ```
 python3 main.py --mode=1 -F=test_example/SIMU10/5T5K.mrc -P=test_example/SIMU10/5t5k.pdb --type=1 --gpu=0 --class=4 
@@ -206,7 +206,7 @@ In the Predict_Result_WithPDB/SIMU10/[Input_Map_Name], our evaluation report wil
   <img src="figures/5T5K_report.png" alt="5T5K report" width="50%">
 </p> 
 
-Here the precision is the fraction of correct predicted structures among the specific pedicted structure, while recall (also known as sensitivity) is the fraction of the total amount of the specific structure that were actually retrieved. The F1 score is the harmonic mean of the precision and recall. The support is the number of voxels with the structure lable. Here the macro measurement means macro-averaging(taking all classes as equally important), while the micro means mirco-avearging (biased by class frequency).
+Here the precision is the fraction of correct predicted structures among the specific pedicted structure, while recall (also known as sensitivity) is the fraction of the total amount of the specific structure that were actually retrieved. The F1 score is the harmonic mean of the precision and recall. The support is the number of voxels with the structure lable. The macro measurement means macro-averaging(taking all classes as equally important), while the micro means mirco-avearging (biased by class frequency).
 
 #### 4 Visulization
 <p align="center">
@@ -223,13 +223,13 @@ Command line:
 ```
 python3 main.py --mode=0 -F=test_example/REAL/6BJS.mrc --type=3 --gpu=0 --class=4 --fold=3 -–contour=0.006 
 ```
-If the map grid size is smaller than 1, you also need to specify --resize=1 in the command line, which will be slower compared to the default mode. The example input map is [6BJS](https://github.rcac.purdue.edu/kiharalab/Emap2secPlus/tree/master/test_example/REAL), which is in the fold 3 testing dataset.Our detailed results are saved in [6BJS_Result](https://github.rcac.purdue.edu/kiharalab/Emap2secPlus/tree/master/predict_example/REAL).
+If the map grid size is smaller than 1, you also need to specify –-resize=1 to resize the grid size in the command line. This will make the command run slower than the default mode. The example input map is included in [6BJS](https://github.rcac.purdue.edu/kiharalab/Emap2secPlus/tree/master/test_example/REAL), which is in the fold 3 testing dataset. Our detailed results are saved in [6BJS_Result](https://github.rcac.purdue.edu/kiharalab/Emap2secPlus/tree/master/predict_example/REAL).
 
 #### 2 Visualize Result
-Results are saved in Predict_Result/REAL/Fold3_Model_Result/[Input_Map_Name]. Phase 1 and Phase 2 visualization results are saved in “Phase1” and “Phase2” sub-directory, respectively. *.pml files will be generated for you to visualize. Please use “pymol -u *.pml” to visualize the final structures. Also, for confident detection results, you can check by “pymol -u *C.pml” in another visualization file which only includes confident detection results with probability>=0.9.
+Results are saved in Predict_Result/REAL/Fold3_Model_Result/[Input_Map_Name]. Phase 1 and Phase 2 visualization results (Pymol sessions) are saved in “Phase1” and “Phase2” sub-directory, respectively. You will find generated *.pml files generated to visualize. Please use “pymol -u *.pml” to visualize the final structure detection result. If you want to only see very confident detection results, run “pymol -u *C.pml” using another visualization file named "*C.pml", which only includes confident detections with a probability>=0.9.
 
-#### 3 Detect and Evaluate Performance
-##### This mode can not be used in real scenarios since native structure will not be available. We usually used the mode to evaluate Emap2sec+ performance on testing dataset to verify its performance. This can be used when native structures are provided to evaluate Emap2sec+ detection performance. Meanwhile, this can be also used to measure the difference of our detected structure with structure assigned by experimental researchers. 
+#### 3 Evaluate Performance(only when the correct underlined structure in the map is known) 
+##### In the case that you are testing the software with a case, you can check the accuracy of the structure detection by Emap2sec+ by comparing the result with the known structure. This mode cannot be used in real scenarios where the native structure is not available. We usually use the mode to evaluate Emap2sec+ performance on testing dataset with known structures to verify its performance. This mode is also useful to measure the difference of the detected structure by Emap2sec+ with the structure currently assigned to the EM map.
 Command line:
 ```
 python3 main.py --mode=1 -F=test_example/REAL/6BJS.mrc -P=test_example/REAL/6bjs.pdb  --type=3  --gpu=0 --class=4 -–fold=3 -–contour=0.006
@@ -239,7 +239,7 @@ In the Predict_Result_WithPDB/REAL/Fold3_Model_Result/[Input_Map_Name], our eval
   <img src="figures/6BJS_report.png" alt="6BJS report" width="50%">
 </p> 
 
-Here the precision is the fraction of correct predicted structures among the specific pedicted structure, while recall (also known as sensitivity) is the fraction of the total amount of the specific structure that were actually retrieved. The F1 score is the harmonic mean of the precision and recall. The support is the number of voxels with the structure lable. Here the macro measurement means macro-averaging(taking all classes as equally important), while the micro means mirco-avearging (biased by class frequency).
+Here the precision is the fraction of correct predicted structures among the specific pedicted structure, while recall (also known as sensitivity) is the fraction of the total amount of the specific structure that were actually retrieved. The F1 score is the harmonic mean of the precision and recall. The support is the number of voxels with the structure lable. The macro measurement means macro-averaging(taking all classes as equally important), while the micro means mirco-avearging (biased by class frequency).
 
 #### 4 Visulization
 
@@ -254,17 +254,18 @@ Here the precision is the fraction of correct predicted structures among the spe
 ### Experimental map example with majority vote
 ### \*Recommended when applying Emap2sec+ for experimental maps\*
 #### 1 Emap2sec+ Detection
-Cammand line:
+Command line:
 ```
 python3 main.py --mode=2 -F=test_example/REAL_Vote/5WCB.mrc --type=3 --gpu=0 --class=4 -–contour=0.0332
 ```
-If the map grid size is smaller than 1, you also need to specify --resize=1 in the command line, which will be slower compared to the default mode. The example input map is [5WCB](https://github.rcac.purdue.edu/kiharalab/Emap2secPlus/tree/master/test_example/REAL_Vote), which is a previous example in Emap2sec paper. This example also proves our method can work on EM maps without DNA/RNA.Our detailed results are saved in [Real_Vote](https://github.rcac.purdue.edu/kiharalab/Emap2secPlus/tree/master/predict_example/REAL_Vote).
+If the map grid size is smaller than 1, you also need to specify –-resize=1 to resize the grid size in the command line. This will make the command run slower than the default mode. The example input map is included in [5WCB](https://github.rcac.purdue.edu/kiharalab/Emap2secPlus/tree/master/test_example/REAL_Vote), which is a previous example in Emap2sec paper. This example also proves our method can work on EM maps without DNA/RNA. Our output results are saved in [Real_Vote](https://github.rcac.purdue.edu/kiharalab/Emap2secPlus/tree/master/predict_example/REAL_Vote).
 
 #### 2 Visualize Result
-Results are saved in Predict_Result/REAL/[Input_Map_Name]. Final visualization results are saved in “FINAL”. *.pml files will be generated for you to visualize. Please use “pymol -u *.pml” to visualize the final structures. Also, for confident detection results, you can check by “pymol -u *C.pml” in another visualization file which only includes confident detection results with probability>=0.9.
+Results are saved in Predict_Result/REAL/[Input_Map_Name]. Phase 1 and Phase 2 visualization results (Pymol sessions) are saved in “Phase1” and “Phase2” sub-directory, respectively. You will find generated *.pml files generated to visualize. Please use “pymol -u *.pml” to visualize the final structure detection result. If you want to only see very confident detection results, run “pymol -u *C.pml” using another visualization file named "*C.pml", which only includes confident detections with a probability>=0.9.
 
-#### 3 Detect and Evaluate Performance
-##### This mode can not be used in real scenarios since native structure will not be available. We usually used the mode to evaluate Emap2sec+ performance on testing dataset to verify its performance. This can be used when native structures are provided to evaluate Emap2sec+ detection performance. Meanwhile, this can be also used to measure the difference of our detected structure with structure assigned by experimental researchers. 
+#### 3 Evaluate Performance (only when the correct underlined structure in the map is known) 
+##### In the case that you are testing the software with a case, you can check the accuracy of the structure detection by Emap2sec+ by comparing the result with the known structure. This mode cannot be used in real scenarios where the native structure is not available. We usually use the mode to evaluate Emap2sec+ performance on testing dataset with known structures to verify its performance. This mode is also useful to measure the difference of the detected structure by Emap2sec+ with the structure currently assigned to the EM map.
+ 
 Command line:
 ```
 python3 main.py --mode=3 -F=test_example/REAL_Vote/5WCB.mrc -P=test_example/REAL_Vote/5wcb.pdb --type=3  --gpu=0 --class=4 -–contour=0.0332
@@ -274,7 +275,7 @@ In the Predict_Result_WithPDB/REAL/[Input_Map_Name], our evaluation report will 
   <img src="figures/5WCB_report.png" alt="5WCB report" width="50%">
 </p> 
 
-Here the precision is the fraction of correct predicted structures among the specific pedicted structure, while recall (also known as sensitivity) is the fraction of the total amount of the specific structure that were actually retrieved. The F1 score is the harmonic mean of the precision and recall. The support is the number of voxels with the structure lable. Here the macro measurement means macro-averaging(taking all classes as equally important), while the micro means mirco-avearging (biased by class frequency).
+Here the precision is the fraction of correct predicted structures among the specific pedicted structure, while recall (also known as sensitivity) is the fraction of the total amount of the specific structure that were actually retrieved. The F1 score is the harmonic mean of the precision and recall. The support is the number of voxels with the structure lable. The macro measurement means macro-averaging(taking all classes as equally important), while the micro means mirco-avearging (biased by class frequency).
 #### 4 Visulization
 
 <p align="center">

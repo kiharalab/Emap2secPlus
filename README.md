@@ -188,7 +188,7 @@ Cammand line
 ```
 python3 main.py --mode=0 -F=test_example/SIMU10/5T5K.mrc --type=1 --gpu=0 --class=4 
 ```
-If the map grid size is smaller than 1, you also need to specify –-resize=1 in the command line, which will be slower compared to the default mode. The example input map is included in [5T5K](https://github.rcac.purdue.edu/kiharalab/Emap2secPlus/test_example/SIMU10).Our detailed results are saved in [5T5K_Prediction](https://github.rcac.purdue.edu/kiharalab/Emap2secPlus/predict_example/SIMU10).
+If the map grid size is smaller than 1, you also need to specify –-resize=1 in the command line, which will be slower compared to the default mode. The example input map is included in [5T5K](https://github.rcac.purdue.edu/kiharalab/Emap2secPlus/tree/master/test_example/SIMU10).Our detailed results are saved in [5T5K_Prediction](https://github.rcac.purdue.edu/kiharalab/Emap2secPlus/tree/master/predict_example/SIMU10).
 
 #### 2 Visualize Result
 Results are saved in Predict_Result/SIMU10/[Input_Map_Name]. Phase 1 and Phase 2 visualization results are saved in “Phase1” and “Phase2” sub-directory, respectively. *.pml files will be generated for you to visualize. Please use “pymol -u *.pml” to visualize the final structures. Also, for confident predictions, you can check by “pymol -u *C.pml” in another visualization file named "*C.pml" which only includes confident predictions with predicted probability>=0.9.
@@ -218,7 +218,7 @@ Cammand line:
 ```
 python3 main.py --mode=0 -F=test_example/REAL/6BJS.mrc --type=3 --gpu=0 --class=4 --fold=3 -–contour=0.006 
 ```
-If the map grid size is smaller than 1, you also need to specify --resize=1 in the command line, which will be slower compared to the default mode. The example input map is [6BJS](https://github.rcac.purdue.edu/kiharalab/Emap2secPlus/test_example/REAL), which is in the fold 3 testing dataset.Our detailed results are saved in [6BJS_Prediction](https://github.rcac.purdue.edu/kiharalab/Emap2secPlus/predict_example/REAL).
+If the map grid size is smaller than 1, you also need to specify --resize=1 in the command line, which will be slower compared to the default mode. The example input map is [6BJS](https://github.rcac.purdue.edu/kiharalab/Emap2secPlus/tree/master/test_example/REAL), which is in the fold 3 testing dataset.Our detailed results are saved in [6BJS_Prediction](https://github.rcac.purdue.edu/kiharalab/Emap2secPlus/tree/master/predict_example/REAL).
 
 #### 2 Visualize Result
 Results are saved in Predict_Result/REAL/Fold3_Model_Result/[Input_Map_Name]. Phase 1 and Phase 2 visualization results are saved in “Phase1” and “Phase2” sub-directory, respectively. *.pml files will be generated for you to visualize. Please use “pymol -u *.pml” to visualize the final structures. Also, for confident predictions, you can check by “pymol -u *C.pml” in another visualization file which only includes confident predictions with predicted probability>=0.9.
@@ -250,7 +250,7 @@ Cammand line:
 ```
 python3 main.py --mode=2 -F=test_example/REAL_Vote/5WCB.mrc --type=3 --gpu=0 --class=4 -–contour=0.0332
 ```
-If the map grid size is smaller than 1, you also need to specify --resize=1 in the command line, which will be slower compared to the default mode. The example input map is [5WCB](https://github.rcac.purdue.edu/kiharalab/Emap2secPlus/test_example/REAL_Vote), which is a previous example in Emap2sec paper. This example also proves our method can work on EM maps without DNA/RNA.Our detailed results are saved in [Real_Vote](https://github.rcac.purdue.edu/kiharalab/Emap2secPlus/predict_example/REAL_Vote).
+If the map grid size is smaller than 1, you also need to specify --resize=1 in the command line, which will be slower compared to the default mode. The example input map is [5WCB](https://github.rcac.purdue.edu/kiharalab/Emap2secPlus/tree/master/test_example/REAL_Vote), which is a previous example in Emap2sec paper. This example also proves our method can work on EM maps without DNA/RNA.Our detailed results are saved in [Real_Vote](https://github.rcac.purdue.edu/kiharalab/Emap2secPlus/tree/master/predict_example/REAL_Vote).
 
 #### 2 Visualize Result
 Results are saved in Predict_Result/REAL/[Input_Map_Name]. Final visualization results are saved in “FINAL”. *.pml files will be generated for you to visualize. Please use “pymol -u *.pml” to visualize the final structures. Also, for confident predictions, you can check by “pymol -u *C.pml” in another visualization file which only includes confident predictions with predicted probability>=0.9.

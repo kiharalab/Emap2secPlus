@@ -38,7 +38,7 @@ An increasing number of density maps of macromolecular structures, including pro
 (1) Preprocess cryo-EM map (*.mrc format;including remove density outside the contour level and change the grid size to 1);
 (2) Scan EM map to get voxel input and corrsponding locations and save it in *.trimmap file;
 (3) Generate *.input file which includes formatted 3D input for Network;
-(4) Apply Phase1 Network and Phase2 Network to assign labels for each voxels and save the predictions in *pred.txt;
+(4) Apply Phase1 Network and Phase2 Network to assign labels for each voxel and save the predictions in *pred.txt;
 (5) Output *.pdb and *.pml file to visualize predictions;
 (6) Output the evaluation report in *report.txt (if with PDB structure).
 ```
@@ -73,7 +73,7 @@ An increasing number of density maps of macromolecular structures, including pro
 ## Pre-required software
 Python 3 : https://www.python.org/downloads/    
 pdb2vol (for generating simulated maps): https://situs.biomachina.org/fguide.html   
-Pymol(for visualiztion): https://pymol.org/2/        
+Pymol(for visualization): https://pymol.org/2/        
 
 ## Installation  
 ### 1. [`Install git`](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) 
@@ -119,7 +119,7 @@ conda activate Emap
 conda deactivate(If you want to exit) 
 ```
 #### 4. Downloading the model files and example files.
-Due to the data quota limit of github, our model can't kept in this repo. Please download them [here](https://github.rcac.purdue.edu/kiharalab/Emap2secPlus/tree/master/best_model) and put them in the Emap2secPlus directory. If you git clone in 2nd options, please ignore this.
+Due to the data quota limit of github, our model can't be kept in this repo. Please download them [here](https://github.rcac.purdue.edu/kiharalab/Emap2secPlus/tree/master/best_model) and put them in the Emap2secPlus directory. If git clone in 2nd options, please ignore this.
 
 ## Usage
 ```
@@ -132,7 +132,7 @@ python3 main.py -h:
                         3: Detect and evaluate structure for experimental maps with 4 fold models
   --resize              0: resizing maps with numba optimized (some maps size are not supported); 
                         1: resizing maps with scipy (relatively slow but support almost all maps).
-  -P P                  native structure path (PDB format) for evaluating model's performance (usually not avilable for real scenarios)
+  -P P                  native structure path (PDB format) for evaluating model's performance (usually not available for real scenarios)
   --type TYPE           0:simulated map at 6 Å 1: simulated map at 10 Å 2:simulated map at 6-10 Å 3:experimental map
   --gpu GPU             gpu id choose for training
   --class CLASS         number of classes
@@ -145,7 +145,7 @@ python3 main.py -h:
 ```
 python3 main.py --mode=0 -F=[Map_path] --type=[Map_Type] --gpu=0 --class=4 --contour=[contour_level] --fold=[Choose_Fold]
 ```
-Here [Map_path] is the cryo EM mrc file path in your computer. [Map_Type] should be specified based on your input map type, which will be used to load proper pre-trained model. [contour_level] and [Choose_Fold] only need to be specified for experimental maps.             
+Here [Map_path] is the cryo-EM map file path in your computer. [Map_Type] should be specified based on your input map type, which will be used to load proper pre-trained model. [contour_level] and [Choose_Fold] only need to be specified for experimental maps.             
 Output will be saved in "Predict_Result/[Map_Type]/[Input_Map_Name]".       
 If the map grid size is smaller than 1, you also need to specify –-resize=1 to resize the grid size in the command line. This will make the program run slower than the default mode. 
 ### 2. Evaluate Performance (only when the correct underlined structure in the map is known)
@@ -162,7 +162,7 @@ python3 main.py --mode=2 -F=[Map_path] --type=3 --gpu=0 --class=4 --contour=[con
 ```    
 The backend program will automatically call 4 fold networks and aggregate the final detection probabilities by majority vote of 4 networks. Output will be saved in "Predict_Result_WithPDB/REAL/[Input_Map_Name]". 
 
-### 4. Detect and evaluate structure for experimental maps with 4 fold models
+### 4. Evaluate performance for experimental maps with 4 fold networks
 #### In the case that you are testing the software with a case, you can check the accuracy of the structure detection by Emap2sec+ by comparing the result with the known structure. This mode cannot be used in real scenarios where the native structure is not available. We usually use the mode to evaluate Emap2sec+ performance on testing dataset with known structures to verify its performance. This mode is also useful to measure the difference of the detected structure by Emap2sec+ with the structure currently assigned to the EM map.
 ```
 python3 main.py --mode=3 -F=[Map_path] -P=[PDB_path] --type=3 --gpu=0 --class=4 --contour=[contour_level] 
@@ -206,9 +206,9 @@ In the Predict_Result_WithPDB/SIMU10/[Input_Map_Name], our evaluation report wil
   <img src="figures/5T5K_report.png" alt="5T5K report" width="50%">
 </p> 
 
-Here the precision is the fraction of correct predicted structures among the specific pedicted structure, while recall (also known as sensitivity) is the fraction of the total amount of the specific structure that were actually retrieved. The F1 score is the harmonic mean of the precision and recall. The support is the number of voxels with the structure lable. The macro measurement means macro-averaging(taking all classes as equally important), while the micro means mirco-avearging (biased by class frequency).
+Here the precision is the fraction of correct predicted structures among the specific predicted structure, while recall (also known as sensitivity) is the fraction of the total amount of the specific structure that were actually retrieved. The F1 score is the harmonic mean of the precision and recall. The support is the number of voxels with the structure label. The macro measurement means macro-averaging(taking all classes as equally important), while the micro means mirco-averaging (biased by class frequency).
 
-#### 4 Visulization
+#### 4 Visualization
 <p align="center">
   <img src="figures/5T5K_map.png" title="Map" width="30%" ><img src="figures/5T5K_structure.png" title="Structure" width="30%"><img src="figures/5T5K_pred.png" title="Prediction" width="30%">
 </p> 
@@ -239,9 +239,9 @@ In the Predict_Result_WithPDB/REAL/Fold3_Model_Result/[Input_Map_Name], our eval
   <img src="figures/6BJS_report.png" alt="6BJS report" width="50%">
 </p> 
 
-Here the precision is the fraction of correct predicted structures among the specific pedicted structure, while recall (also known as sensitivity) is the fraction of the total amount of the specific structure that were actually retrieved. The F1 score is the harmonic mean of the precision and recall. The support is the number of voxels with the structure lable. The macro measurement means macro-averaging(taking all classes as equally important), while the micro means mirco-avearging (biased by class frequency).
+Here the precision is the fraction of correct predicted structures among the specific predicted structure, while recall (also known as sensitivity) is the fraction of the total amount of the specific structure that were actually retrieved. The F1 score is the harmonic mean of the precision and recall. The support is the number of voxels with the structure label. The macro measurement means macro-averaging(taking all classes as equally important), while the micro means mirco-averaging (biased by class frequency).
 
-#### 4 Visulization
+#### 4 Visualization
 
 <p align="center">
   <img src="figures/6BJS_map.png" title="Map" width="30%" ><img src="figures/6BJS_structure.png" title="Structure" width="30%"><img src="figures/6BJS_pred.png" title="Prediction" width="30%">
@@ -275,8 +275,9 @@ In the Predict_Result_WithPDB/REAL/[Input_Map_Name], our evaluation report will 
   <img src="figures/5WCB_report.png" alt="5WCB report" width="50%">
 </p> 
 
-Here the precision is the fraction of correct predicted structures among the specific pedicted structure, while recall (also known as sensitivity) is the fraction of the total amount of the specific structure that were actually retrieved. The F1 score is the harmonic mean of the precision and recall. The support is the number of voxels with the structure lable. The macro measurement means macro-averaging(taking all classes as equally important), while the micro means mirco-avearging (biased by class frequency).
-#### 4 Visulization
+Here the precision is the fraction of correct predicted structures among the specific predicted structure, while recall (also known as sensitivity) is the fraction of the total amount of the specific structure that were actually retrieved. The F1 score is the harmonic mean of the precision and recall. The support is the number of voxels with the structure label. The macro measurement means macro-averaging(taking all classes as equally important), while the micro means mirco-averaging (biased by class frequency).
+
+#### 4 Visualization
 
 <p align="center">
   <img src="figures/5WCB_map.png" title="Map" width="30%" ><img src="figures/5WCB_structure.png" title="Structure" width="30%"><img src="figures/5WCB_pred.png" title="Prediction" width="30%">

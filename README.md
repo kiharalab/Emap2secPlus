@@ -149,7 +149,7 @@ Here [Map_path] is the cryo EM mrc file path in your computer. [Map_Type] should
 Output will be saved in "Predict_Result/[Map_Type]/[Input_Map_Name]". 
 --resize=1 sometimes needs to be specified if your map's grid size is smaller than 1. Our default faster resizing script based on numba only supports interpolation for maps with grid size>1.
 ### 2. Detect and evaluate EM maps
-**This mode can't be used in real scenarios since native structure will not be available This can only be used when native structures are provided**
+**This mode can't be used in real scenarios since native structure will not be available. This can be used when native structures are provided to evaluate our model's detection performance. Meanwhile, this can be also used to measure the difference of our detected structure with structure decided by experimental researchers. **
 ```
 python3 main.py --mode=1 -F=[Map_path] -P=[PDB_path] --type=[Map_Type] --gpu=0 --class=4 --contour=[contour_level] --fold=[Choose_Fold]
 ```

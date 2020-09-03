@@ -90,7 +90,7 @@ git clone git@github.rcac.purdue.edu:kiharalab/Emap2secPlus.git && cd Emap2secPl
 
 ### 3. Build dependencies.   
 You have two options to install dependency on your computer:
-#### 3.1 Install with pip
+#### 3.1 Install with pip and python(Ver 3.6.9).
 ##### 3.1.1[`install pip`](https://pip.pypa.io/en/stable/installing/).
 ##### 3.1.2  Install dependency in command line.
 ```
@@ -148,8 +148,8 @@ python3 main.py --mode=0 -F=[Map_path] --type=[Map_Type] --gpu=0 --class=4 --con
 Here [Map_path] is the cryo EM mrc file path in your computer. [Map_Type] should be specified based on your input map type, which will be used to load proper pre-trained model. [contour_level] and [Choose_Fold] should only be specified for experimental maps.          
 Output will be saved in "Predict_Result/[Map_Type]/[Input_Map_Name]". 
 --resize=1 sometimes needs to be specified if your map's grid size is smaller than 1. Our default faster resizing script based on numba only supports interpolation for maps with grid size>1.
-### 2. Detect and evaluate EM maps
-**This mode can't be used in real scenarios since native structure will not be available. This can be used when native structures are provided to evaluate our model's detection performance. Meanwhile, this can be also used to measure the difference of our detected structure with structure decided by experimental researchers. **
+### 2. Detect and evaluate EM maps (when native structure is avilable)
+##### This mode can not be used in real scenarios since native structure will not be available. We usually used the mode to evaluate Emap2sec+ performance on testing dataset to verify its performance. This can be used when native structures are provided to evaluate Emap2sec+ detection performance. Meanwhile, this can be also used to measure the difference of our detected structure with structure assigned by experimental researchers. 
 ```
 python3 main.py --mode=1 -F=[Map_path] -P=[PDB_path] --type=[Map_Type] --gpu=0 --class=4 --contour=[contour_level] --fold=[Choose_Fold]
 ```
@@ -163,6 +163,7 @@ python3 main.py --mode=2 -F=[Map_path] --type=3 --gpu=0 --class=4 --contour=[con
 The backend program will automatically call 4 fold models and aggregate the final detection probabilities by majority vote of 4 models. Output will be saved in "Predict_Result_WithPDB/REAL/[Input_Map_Name]". 
 
 ### 4. Detect and evaluate structure for experimental maps with 4 fold models
+##### This mode can not be used in real scenarios since native structure will not be available. We usually used the mode to evaluate Emap2sec+ performance on testing dataset to verify its performance. This can be used when native structures are provided to evaluate Emap2sec+ detection performance. Meanwhile, this can be also used to measure the difference of our detected structure with structure assigned by experimental researchers. 
 ```
 python3 main.py --mode=3 -F=[Map_path] -P=[PDB_path] --type=3 --gpu=0 --class=4 --contour=[contour_level] 
 ```
@@ -194,7 +195,8 @@ If the map grid size is smaller than 1, you also need to specify –-resize=1 in
 #### 2 Visualize Result
 Results are saved in Predict_Result/SIMU10/[Input_Map_Name]. Phase 1 and Phase 2 visualization results are saved in “Phase1” and “Phase2” sub-directory, respectively. *.pml files will be generated for you to visualize. Please use “pymol -u *.pml” to visualize the final structures. Also, for confident detection results, you can check by “pymol -u *C.pml” in another visualization file named "*C.pml" which only includes confident detection areas with probability>=0.9.
 
-#### 3 Evaluation Performance
+#### 3 Detect and Evaluate Performance
+##### This mode can not be used in real scenarios since native structure will not be available. We usually used the mode to evaluate Emap2sec+ performance on testing dataset to verify its performance. This can be used when native structures are provided to evaluate Emap2sec+ detection performance. Meanwhile, this can be also used to measure the difference of our detected structure with structure assigned by experimental researchers. 
 Command line:
 ```
 python3 main.py --mode=1 -F=test_example/SIMU10/5T5K.mrc -P=test_example/SIMU10/5t5k.pdb --type=1 --gpu=0 --class=4 
@@ -224,7 +226,8 @@ If the map grid size is smaller than 1, you also need to specify --resize=1 in t
 #### 2 Visualize Result
 Results are saved in Predict_Result/REAL/Fold3_Model_Result/[Input_Map_Name]. Phase 1 and Phase 2 visualization results are saved in “Phase1” and “Phase2” sub-directory, respectively. *.pml files will be generated for you to visualize. Please use “pymol -u *.pml” to visualize the final structures. Also, for confident detection results, you can check by “pymol -u *C.pml” in another visualization file which only includes confident detection results with probability>=0.9.
 
-#### 3 Evaluation Performance
+#### 3 Detect and Evaluate Performance
+##### This mode can not be used in real scenarios since native structure will not be available. We usually used the mode to evaluate Emap2sec+ performance on testing dataset to verify its performance. This can be used when native structures are provided to evaluate Emap2sec+ detection performance. Meanwhile, this can be also used to measure the difference of our detected structure with structure assigned by experimental researchers. 
 Command line:
 ```
 python3 main.py --mode=1 -F=test_example/REAL/6BJS.mrc -P=test_example/REAL/6bjs.pdb  --type=3  --gpu=0 --class=4 -–fold=3 -–contour=0.006
@@ -256,7 +259,8 @@ If the map grid size is smaller than 1, you also need to specify --resize=1 in t
 #### 2 Visualize Result
 Results are saved in Predict_Result/REAL/[Input_Map_Name]. Final visualization results are saved in “FINAL”. *.pml files will be generated for you to visualize. Please use “pymol -u *.pml” to visualize the final structures. Also, for confident detection results, you can check by “pymol -u *C.pml” in another visualization file which only includes confident detection results with probability>=0.9.
 
-#### 3 Evaluation Performance
+#### 3 Detect and Evaluate Performance
+##### This mode can not be used in real scenarios since native structure will not be available. We usually used the mode to evaluate Emap2sec+ performance on testing dataset to verify its performance. This can be used when native structures are provided to evaluate Emap2sec+ detection performance. Meanwhile, this can be also used to measure the difference of our detected structure with structure assigned by experimental researchers. 
 Command line:
 ```
 python3 main.py --mode=3 -F=test_example/REAL_Vote/5WCB.mrc -P=test_example/REAL_Vote/5wcb.pdb --type=3  --gpu=0 --class=4 -–contour=0.0332

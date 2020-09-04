@@ -176,8 +176,8 @@ Cryo-EM map with mrc format.
 
 ### Output File 
 1 *pred.txt: A text file that records detected structure labels by Emap2sec+ for each voxel. Format: [coordinate pred_label pred_prob_value] in each line.  
-2 *.pdb: PDB file that records voxel coordinates and detected structure labels for visualization.  
-3 *.pml: Pymol script for visualizing detected structures. Please use the following command in pymol to visualize the detection results.
+2 *.pdb: a PDB file that records voxel coordinates and detected structure labels.
+3 *.pml: Script for visualizing detected structures using Pymol. Please use "pymol -u .pml" to visualize the detection results.
 ```
 pymol -u *.pml
 ```

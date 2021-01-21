@@ -33,7 +33,8 @@
 import os
 import numpy as np
 from ops.os_operation import mkdir
-def Visualize_Prediction(save_path,map_name,Final_Predict_file,factor,output_str):
+
+def Visualize_Binary_Prediction(save_path,map_name,Final_Predict_file,factor,output_str):
     Final_Predict_Dict={}
     with open(Final_Predict_file,'r') as file:
         line=file.readline()
@@ -41,7 +42,9 @@ def Visualize_Prediction(save_path,map_name,Final_Predict_file,factor,output_str
             line=line.strip()
             split_result=line.split()
             key=split_result[0]
-            Final_Predict_Dict[key]=int(split_result[1])
+            tmp_label = int(split_result[1])
+            tmp_label = 0 if tmp_label<=2 else 1
+            Final_Predict_Dict[key]=tmp_label
             line=file.readline()
     save_path=os.path.join(save_path,output_str)
     mkdir(save_path)
@@ -70,30 +73,32 @@ def Visualize_Prediction(save_path,map_name,Final_Predict_file,factor,output_str
         current_obj_name=map_name +output_str+ "_pred"
         file.write("show spheres, "+current_obj_name+"\n")
         file.write("set sphere_scale, 0.5\n")
-        file.write("color green, chain A and "+current_obj_name+"\n")
-        file.write("color yellow, chain B and " + current_obj_name + "\n")
-        file.write("color red, chain C and " + current_obj_name + "\n")
-        file.write("color cyan, chain D and " + current_obj_name + "\n")
-        file.write("select coil, chain A and "+current_obj_name+"\n")
-        file.write("select beta, chain B and " + current_obj_name + "\n")
-        file.write("select alpha, chain C and " + current_obj_name + "\n")
-        file.write("select DNA_RNA, chain D and " + current_obj_name + "\n")
+        file.write("color red, chain A and "+current_obj_name+"\n")
+        file.write("color cyan, chain B and " + current_obj_name + "\n")
+        file.write("select protein, chain A and "+current_obj_name+"\n")
+        file.write("select DNA_RNA, chain B and " + current_obj_name + "\n")
         file.write("bg_color 0\n")
 
-
-def Visualize_Confident_Prediction(save_path,map_name,Final_Predict_file,factor,output_str):
+def Visualize_Binary_Confident_Prediction(save_path,map_name,Final_Predict_file,factor,output_str):
     Final_Predict_Dict={}
     Final_Prob_Dict = {}
-    n_class=4
     with open(Final_Predict_file,'r') as file:
         line=file.readline()
         while line:
             line=line.strip()
             split_result=line.split()
             key=split_result[0]
-            tmp_label=int(split_result[1])
+            tmp_label = int(split_result[1])
+            tmp_label = 0 if tmp_label<=2 else 1
+            if tmp_label==0:
+                tmp_prob=0
+                for k in range(3):
+                    tmp_prob += float(split_result[2 + tmp_label])
+            else:
+                tmp_prob=float(split_result[5])
+
+            Final_Prob_Dict[key]=tmp_prob
             Final_Predict_Dict[key]=tmp_label
-            Final_Prob_Dict[key]=float(split_result[2+tmp_label])#the prob of the predicted class by our Model
             line=file.readline()
     save_path=os.path.join(save_path,output_str)
     mkdir(save_path)
@@ -105,8 +110,8 @@ def Visualize_Confident_Prediction(save_path,map_name,Final_Predict_file,factor,
     with open(tmp_visual_pred_path, 'w') as predfile:
         for key in Final_Predict_Dict.keys():
             tmp_label = Final_Predict_Dict[key]
-            tmp_prob=Final_Prob_Dict[key]
-            if tmp_prob<0.8:
+            tmp_prob = Final_Prob_Dict[key]
+            if tmp_prob < 0.8:
                 continue
             tmp_chain = chain_dict[tmp_label]
             coordinate=key.split(",")
@@ -119,23 +124,17 @@ def Visualize_Confident_Prediction(save_path,map_name,Final_Predict_file,factor,
             predfile.write(line)
     #color it based on our definition
     #using pymol -u *.pml to open it
-    tmp_visual_script_path = os.path.join(save_path, map_name + output_str + "_predC.pml")
+    tmp_visual_script_path = os.path.join(save_path, map_name + output_str + "_pred.pml")
     with open(tmp_visual_script_path,'w') as file:
-        file.write("load "+map_name +output_str+ "_predC.pdb\n")
-        current_obj_name=map_name +output_str+ "_predC"
+        file.write("load "+map_name +output_str+ "_pred.pdb\n")
+        current_obj_name=map_name +output_str+ "_pred"
         file.write("show spheres, "+current_obj_name+"\n")
         file.write("set sphere_scale, 0.5\n")
-        file.write("color green, chain A and "+current_obj_name+"\n")
-        file.write("color yellow, chain B and " + current_obj_name + "\n")
-        file.write("color red, chain C and " + current_obj_name + "\n")
-        file.write("color cyan, chain D and " + current_obj_name + "\n")
-        file.write("select coil, chain A and " + current_obj_name + "\n")
-        file.write("select beta, chain B and " + current_obj_name + "\n")
-        file.write("select alpha, chain C and " + current_obj_name + "\n")
-        file.write("select DNA_RNA, chain D and " + current_obj_name + "\n")
+        file.write("color red, chain A and "+current_obj_name+"\n")
+        file.write("color cyan, chain B and " + current_obj_name + "\n")
+        file.write("select protein, chain A and "+current_obj_name+"\n")
+        file.write("select DNA_RNA, chain B and " + current_obj_name + "\n")
         file.write("bg_color 0\n")
-
-
 
 
 def Build_Chain_ID():

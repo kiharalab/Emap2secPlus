@@ -319,4 +319,72 @@ if __name__ == "__main__":
         Visualize_Prediction_WithStructure(save_path0, map_name, real_label_path, factor, real_loc_refer, 'REAL')
         Calculate_Performance_Report(save_path0, map_name, input_path,final_pred_path, 'Final')
 
+    elif params['mode']==4:
+        #make protein+DNA/RNA structure binary prediction
+        input_map = params['F']
+        input_map = os.path.abspath(input_map)
+        type = params['type']
+        choose = params['gpu']
+        os.environ["CUDA_VISIBLE_DEVICES"] = choose
+        assert type == 3
+        indicate = "REAL"
+        factor = 2  # reduce 4 to 2 to get more data
+        save_path0 = os.path.join(os.getcwd(), 'Predict_Result')
+        mkdir(save_path0)
+        save_path0 = os.path.join(save_path0, "Binary")
+        mkdir(save_path0)
+        save_path0 = os.path.join(save_path0, indicate)
+        mkdir(save_path0)
+        name_split = os.path.split(input_map)
+        map_name = name_split[1]
+        map_name = map_name.split(".")[0]
+        save_path0 = os.path.join(save_path0, map_name)
+        from process_map.Reform_Map_Voxel import Reform_Map_Voxel, Reform_Map_Voxel_Final
+
+        output_map = os.path.join(save_path0, map_name + ".mrc")
+        if params['resize'] == 1:
+            input_map = Reform_Map_Voxel_Final(input_map, output_map)
+        else:
+            input_map = Reform_Map_Voxel(input_map, output_map)
+
+        from process_map.Build_Map import Build_Map
+
+        contour_level = params['contour']
+        trimmap_path = Build_Map(save_path0, map_name, input_map, type, factor, contour_level)
+
+        from prepare_data.Prepare_Input import Prepare_Input
+
+        input_path = Prepare_Input(save_path0, map_name, trimmap_path, factor)
+        All_Output_File = []
+        from evaluate.Visualize_Binary_Prediction import Visualize_Binary_Prediction, \
+            Visualize_Binary_Confident_Prediction
+        for fold in range(1, 5):
+            save_path = os.path.join(save_path0, "Fold%d_Model_Result" % fold)
+            mkdir(save_path)
+            # reform the map voxel size to 1A instead of experimental voxel size
+            # use the input to predict output
+
+            batch_size = params['batch_size']
+            from evaluate.Predict_Phase1 import Predict_Phase1
+
+            phase1_pred_dict, phase1_pred_file, step1_pred_file = Predict_Phase1(save_path, map_name, input_path,
+                                                                                 indicate, fold, batch_size)
+            # visualize phase 1
+
+
+            Visualize_Binary_Prediction(save_path, map_name, step1_pred_file, factor, 'Phase1')
+            Visualize_Binary_Confident_Prediction(save_path, map_name, phase1_pred_file, factor, 'Phase1')
+            Visualize_Binary_Prediction(save_path, map_name, step1_pred_file, factor, 'Phase2')
+            Visualize_Binary_Confident_Prediction(save_path, map_name, phase1_pred_file, factor, 'Phase2')
+            All_Output_File.append(phase1_pred_file)
+        from evaluate.Combine_All_Predictions import Combine_All_Predictions
+
+        final_pred_path = Combine_All_Predictions(save_path0, map_name, All_Output_File)
+        Visualize_Binary_Prediction(save_path0, map_name, final_pred_path, factor, 'Final')
+        Visualize_Binary_Confident_Prediction(save_path0, map_name, final_pred_path, factor, 'Final')
+
+
+
+
+
 

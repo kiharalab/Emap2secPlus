@@ -82,12 +82,6 @@ Pymol(for visualization): https://pymol.org/2/
 git clone git@github.com:kiharalab/Emap2secPlus.git && cd Emap2secPlus
 ```
 
-or (Recommended)
-
-```
-git clone git@github.rcac.purdue.edu:kiharalab/Emap2secPlus.git && cd Emap2secPlus
-```
-
 ### 3. Build dependencies.   
 You have two options to install dependency on your computer:
 #### 3.1 Install with pip and python(Ver 3.6.9).

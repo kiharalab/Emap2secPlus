@@ -119,7 +119,7 @@ conda activate Emap
 conda deactivate(If you want to exit) 
 ```
 #### 4. Downloading the model files and example files.
-Due to the data quota limit of github, our model can't be kept in this repo. Please download them [here](https://github.rcac.purdue.edu/kiharalab/Emap2secPlus/tree/master/best_model) and put them in the Emap2secPlus directory. If git clone in 2nd options, please ignore this.
+Due to the data quota limit of github, our model can't be kept in this repo. Please download them [here](https://kiharalab.org/emsuites/emap2secplus_model/) and put them in the Emap2secPlus directory. Two different types of model are included here. best_model.tar.gz includes all trained models based on author recommended contour level. nocontour_best_model.tar.gz	includes all trained models without the author contour level.
 
 ## Usage
 ```
@@ -133,6 +133,7 @@ python3 main.py -h:
   --resize              0: resizing maps with numba optimized (some maps size are not supported); 
                         1: resizing maps with scipy (relatively slow but support almost all maps).
   -P P                  native structure path (PDB format) for evaluating model's performance (usually not available for real scenarios)
+  -M                    Trained model path which saved all the trained models
   --type TYPE           0:simulated map at 6 Å 1: simulated map at 10 Å 2:simulated map at 6-10 Å 3:experimental map
   --gpu GPU             gpu id choose for training
   --class CLASS         number of classes
@@ -172,6 +173,26 @@ The backend program will automatically call 4 fold networks and aggregate the fi
 ### 5. Detect Protein+DNA/RNA for experimental maps with 4 fold networks
 ```
 python3 main.py --mode=4 -F=[Map_path] --type=3 --gpu=0 --class=4 --contour=[contour_level]
+```    
+The backend program will automatically call 4 fold networks and aggregate the final detection probabilities by majority vote of 4 networks. Output will be saved in "Predict_Result_WithPDB/REAL/Binary/[Input_Map_Name]". This mode will only output the detection for two classes: protein+DNA/RNA.
+
+### 6. Detect Structures for experimental maps without contour level (only for experimental maps).
+#### 6.1 Detect Structures with only 1 fold network
+```
+python3 main.py --mode=0 -F=[Map_path] -M=[model_path] --type=3 --gpu=0 --class=4 --contour=0 --fold=[Choose_Fold]
+```
+Here [Map_path] is the cryo-EM map file path in your computer. [model_path] should be specified based on the trained model location downloaded from [kiharalab](https://kiharalab.org/emsuites/emap2secplus_model/nocontour_best_model.tar.gz). [Choose_Fold] is used to specify the fold model used for inference.             
+Output will be saved in "Predict_Result/[Map_Type]/[Input_Map_Name]".       
+If the map grid size is smaller than 1, you also need to specify –-resize=1 to resize the grid size in the command line. This will make the program run slower than the default mode. 
+#### 6.2 Detect Structures with 4 fold networks
+```
+python3 main.py --mode=2 -F=[Map_path] -M=[model_path] --type=3 --gpu=0 --class=4 --contour=0
+```    
+The backend program will automatically call 4 fold networks and aggregate the final detection probabilities by majority vote of 4 networks. [model_path] should be specified based on the trained model location downloaded from [kiharalab](https://kiharalab.org/emsuites/emap2secplus_model/nocontour_best_model.tar.gz).    
+ Output will be saved in "Predict_Result_WithPDB/REAL/[Input_Map_Name]".
+#### 6.3 Detect Protein+DNA/RNA for experimental maps with 4 fold networks
+```
+python3 main.py --mode=4 -F=[Map_path] -M=[model_path]  --type=3 --gpu=0 --class=4 --contour=0
 ```    
 The backend program will automatically call 4 fold networks and aggregate the final detection probabilities by majority vote of 4 networks. Output will be saved in "Predict_Result_WithPDB/REAL/Binary/[Input_Map_Name]". This mode will only output the detection for two classes: protein+DNA/RNA.
 

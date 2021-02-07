@@ -39,12 +39,13 @@ from torch import nn
 import torch.nn.functional as F
 from scipy.special import softmax
 
-def Predict_Phase1(save_path,map_name,input_path,indicate,fold,batch_size):
+def Predict_Phase1(save_path,map_name,input_path,indicate,fold,batch_size,params):
     input_size = 11
     dimension = input_size
     n_classes = 4
     final_classes = 4
-    model_path=os.path.join(os.getcwd(),'best_model')
+    #model_path=os.path.join(os.getcwd(),'best_model')
+    model_path = os.path.abspath(params['M'])
     model_path=os.path.join(model_path,indicate)
     if indicate=="REAL":
         model_path=os.path.join(model_path,'Fold'+str(fold))

@@ -44,6 +44,7 @@ def argparser():
     parser.add_argument('--resize',type=int,default=0,help="0: resizing maps with numba optimized (some maps size are not supported);\n"
                                                            "1: resizing maps with scipy (relatively slow but support almost all maps).")
     parser.add_argument('-P',type=str,default="",help="PDB path for evaluating Model's performance")
+    parser.add_argument('-M',type=str,default="best_model",help="Trained model path which saved all the trained models")
     parser.add_argument('--type',type=int,help='0:simulated map at 6 A 1: simulated map at 10 A 2: simulated map at 6-10 A 3:experimental map')
     parser.add_argument('--gpu',type=str,default='0',help='gpu id choose for training')
     parser.add_argument('--class', type=int, default='4', help='number of classes')

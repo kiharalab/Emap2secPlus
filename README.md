@@ -169,6 +169,13 @@ python3 main.py --mode=3 -F=[Map_path] -P=[PDB_path] --type=3 --gpu=0 --class=4 
 ```
 The backend program will automatically call 4 fold networks and aggregate the final detection probabilities by majority vote of 4 networks. Also, the individual evaluation and combined evaluation will be automatically executed by Emap2sec+. Output will be saved in "Predict_Result_WithPDB/REAL/[Input_Map_Name]". 
 
+### 5. Detect Protein+DNA/RNA for experimental maps with 4 fold networks
+```
+python3 main.py --mode=4 -F=[Map_path] --type=3 --gpu=0 --class=4 --contour=[contour_level]
+```    
+The backend program will automatically call 4 fold networks and aggregate the final detection probabilities by majority vote of 4 networks. Output will be saved in "Predict_Result_WithPDB/REAL/Binary/[Input_Map_Name]". This mode will only output the detection for two classes: protein+DNA/RNA.
+
+
 ## Example
 
 ### Input File

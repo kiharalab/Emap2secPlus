@@ -87,7 +87,8 @@ if __name__ == "__main__":
 
         batch_size=params['batch_size']
         from evaluate.Predict_Phase1 import Predict_Phase1
-        phase1_pred_dict,phase1_pred_file,step1_pred_file=Predict_Phase1(save_path,map_name,input_path,indicate,fold,batch_size)
+        phase1_pred_dict,phase1_pred_file,step1_pred_file=\
+            Predict_Phase1(save_path,map_name,input_path,indicate,fold,batch_size,params)
         #visualize phase 1
         from evaluate.Visualize_Prediction import Visualize_Prediction,Visualize_Confident_Prediction
         Visualize_Prediction(save_path, map_name, phase1_pred_file, factor, 'Phase1')
@@ -160,7 +161,8 @@ if __name__ == "__main__":
         batch_size = params['batch_size']
         from evaluate.Predict_Phase1 import Predict_Phase1
 
-        phase1_pred_dict, phase1_pred_file,step1_pred_file = Predict_Phase1(save_path, map_name, input_path, indicate, fold, batch_size)
+        phase1_pred_dict, phase1_pred_file,step1_pred_file = \
+            Predict_Phase1(save_path, map_name, input_path, indicate, fold, batch_size,params)
 
 
         Visualize_Prediction_WithStructure(save_path, map_name, step1_pred_file, factor, real_loc_refer, 'Phase1')
@@ -220,7 +222,8 @@ if __name__ == "__main__":
             batch_size = params['batch_size']
             from evaluate.Predict_Phase1 import Predict_Phase1
 
-            phase1_pred_dict, phase1_pred_file,step1_pred_file = Predict_Phase1(save_path, map_name, input_path, indicate, fold, batch_size)
+            phase1_pred_dict, phase1_pred_file,step1_pred_file = \
+                Predict_Phase1(save_path, map_name, input_path, indicate, fold, batch_size,params)
             # visualize phase 1
             from evaluate.Visualize_Prediction import Visualize_Prediction, Visualize_Confident_Prediction
 
@@ -289,8 +292,8 @@ if __name__ == "__main__":
             batch_size = params['batch_size']
             from evaluate.Predict_Phase1 import Predict_Phase1
 
-            phase1_pred_dict, phase1_pred_file,step1_pred_file = Predict_Phase1(save_path, map_name, input_path, indicate, fold,
-                                                                batch_size)
+            phase1_pred_dict, phase1_pred_file,step1_pred_file = \
+                Predict_Phase1(save_path, map_name, input_path, indicate, fold,batch_size,params)
             # visualize phase 1
             from evaluate.Visualize_Prediction_WithStructure import Visualize_Prediction_WithStructure, \
                 Visualize_Confident_Prediction_WithStructure
@@ -367,8 +370,8 @@ if __name__ == "__main__":
             batch_size = params['batch_size']
             from evaluate.Predict_Phase1 import Predict_Phase1
 
-            phase1_pred_dict, phase1_pred_file, step1_pred_file = Predict_Phase1(save_path, map_name, input_path,
-                                                                                 indicate, fold, batch_size)
+            phase1_pred_dict, phase1_pred_file, step1_pred_file = \
+                Predict_Phase1(save_path, map_name, input_path,indicate, fold, batch_size,params)
             # visualize phase 1
 
 

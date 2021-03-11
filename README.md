@@ -115,6 +115,9 @@ conda deactivate(If you want to exit)
 #### 4. Downloading the model files and example files.
 Due to the data quota limit of github, our model can't be kept in this repo. Please download them [here](https://kiharalab.org/emsuites/emap2secplus_model/) and put them in the Emap2secPlus directory. Two different types of model are included here. best_model.tar.gz includes all trained models based on author recommended contour level. nocontour_best_model.tar.gz	includes all trained models without the author contour level.
 
+## Data Avilability
+The raw data of the structure models built by our method are provided in Supplementary Information, Supp. Table 1 and 4. The simulated EM maps can be downloaded in https://doi.org/10.5281/zenodo.4599657). The experimental EM maps can be downloaded from EMDB (https://www.emdataresource.org/). The data that support the findings of this study are available from the corresponding author upon request. 
+
 ## Usage
 ```
 python3 main.py -h:

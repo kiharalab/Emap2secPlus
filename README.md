@@ -18,7 +18,7 @@ Contact: Daisuke Kihara (dkihara@purdue.edu)
 
 ## Citation:
 
-Xiao Wang, Eman Alnabati, Tunde W Aderinwale, Sai Raghavendra Maddhuri Venkata Subramaniya, Genki Terashi & Daisuke Kihara. Detecting Protein and DNA/RNA Structures in Cryo-EM Maps of Intermediate Resolution Using Deep Learning. Nature Communications(2021).
+Xiao Wang, Eman Alnabati, Tunde W Aderinwale, Sai Raghavendra Maddhuri Venkata Subramaniya, Genki Terashi & Daisuke Kihara. Detecting protein and DNA/RNA structures in cryo-EM maps of intermediate resolution using deep learning. Nature Commununications 12, 2302 (2021). https://doi.org/10.1038/s41467-021-22577-3 [PDF](https://www.nature.com/articles/s41467-021-22577-3)
 ```
 @article{wang2021emap2secplus,   
   title={Detecting Protein and DNA/RNA Structures in Cryo-EM Maps of Intermediate Resolution Using Deep Learning},   

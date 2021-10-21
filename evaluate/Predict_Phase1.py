@@ -106,6 +106,7 @@ def Predict_Phase1(save_path,map_name,input_path,indicate,fold,batch_size,params
                 line=file.readline()
 
         return Prediction_Dict,tmp_result_path,tmp_result_path0
+    prob_pred_path = os.path.join(save_path,"predict_prob.npy")
     Input_file = input_path
     Prediction_Dict = {}  # record the prediction with a dict
     #Output_Dict = {}

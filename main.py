@@ -91,8 +91,8 @@ if __name__ == "__main__":
             Predict_Phase1(save_path,map_name,input_path,indicate,fold,batch_size,params)
         #visualize phase 1
         from evaluate.Visualize_Prediction import Visualize_Prediction,Visualize_Confident_Prediction
-        Visualize_Prediction(save_path, map_name, phase1_pred_file, factor, 'Phase1')
-        Visualize_Confident_Prediction(save_path, map_name, phase1_pred_file, factor, 'Phase1')
+        Visualize_Prediction(save_path, map_name, step1_pred_file,  factor, 'Phase1')
+        Visualize_Confident_Prediction(save_path, map_name, step1_pred_file, factor, 'Phase1')
         Visualize_Prediction(save_path,map_name,phase1_pred_file,factor,'Phase2')
         Visualize_Confident_Prediction(save_path,map_name,phase1_pred_file,factor,'Phase2')
 

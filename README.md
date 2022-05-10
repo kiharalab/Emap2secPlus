@@ -95,7 +95,7 @@ If you encounter any errors, you can install each library one by one:
 ```
 pip3 install mrcfile==1.1.2
 pip3 install numpy==1.18.5
-pip3 install numba==0.50.0
+pip3 install numba
 pip3 install torch==1.1.0
 pip3 install scipy==1.4.1
 ```

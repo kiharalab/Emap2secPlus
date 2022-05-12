@@ -138,6 +138,7 @@ python3 main.py -h:
   --batch_size BATCH_SIZE batch size for training
   --contour CONTOUR     Contour level for real map
   --fold FOLD           specify the fold model used for detecting the experimental map
+  --output_folder       specify a custom folder where results will be stored (optional, default will be located in project root and name will depend on mode)
 ```
 
 ### 1. Detect structures with EM maps

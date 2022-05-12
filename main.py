@@ -35,14 +35,14 @@ from ops.os_operation import mkdir
 import shutil
 
 # Defining constants
-PREDICT_RESULT_DEFAULT_FOLDER = 'Predict_Result'
-PREDICT_RESULT_WITH_PDB_DEFAULT_FOLDER = 'Predict_Result_WithPDB'
+RESULT_DEFAULT_FOLDER = 'Predict_Result'
+RESULT_WITH_PDB_DEFAULT_FOLDER = 'Predict_Result_WithPDB'
 
 def getOutputPath(custom_path, mode):
     """ This function returns the output path for the results. """
     if custom_path:
         return custom_path
-    relative_default_path = PREDICT_RESULT_WITH_PDB_DEFAULT_FOLDER if (mode == 1 or mode == 3) else PREDICT_RESULT_DEFAULT_FOLDER
+    relative_default_path = RESULT_WITH_PDB_DEFAULT_FOLDER if (mode == 1 or mode == 3) else RESULT_DEFAULT_FOLDER
     return os.path.join(os.getcwd(), relative_default_path)
 
 if __name__ == "__main__":

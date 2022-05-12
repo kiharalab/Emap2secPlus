@@ -53,6 +53,7 @@ def argparser():
     parser.add_argument('--cardinality', default=32, type=int, help='ResNeXt cardinality')
     parser.add_argument('--drop_rate',type=float,default=0.3,help="Drop out rate for the phase2 Model")
     parser.add_argument('--fold',type=int,default=1,help='specify the fold Model used for predicting the real map')
+    parser.add_argument('--output_folder',type=str,default="",help='specify a custom folder where results will be stored')
     args = parser.parse_args()
     # try:
     #     import ray,socket

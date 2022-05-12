@@ -34,6 +34,17 @@ from ops.argparser import argparser
 from ops.os_operation import mkdir
 import shutil
 
+# Defining constants
+PREDICT_RESULT_DEFAULT_FOLDER = 'Predict_Result'
+PREDICT_RESULT_WITH_PDB_DEFAULT_FOLDER = 'Predict_Result_WithPDB'
+
+def getOutputPath(custom_path, mode):
+    """ This function returns the output path for the results. """
+    if custom_path:
+        return custom_path
+    relative_default_path = PREDICT_RESULT_WITH_PDB_DEFAULT_FOLDER if (mode == 1 or mode == 3) else PREDICT_RESULT_DEFAULT_FOLDER
+    return os.path.join(os.getcwd(), relative_default_path)
+
 if __name__ == "__main__":
     params = argparser()
     if params['mode']==0:
@@ -54,7 +65,7 @@ if __name__ == "__main__":
             print("we only have 4 type predictions: simulated(0,1,2) and experimental map(3)")
             exit()
         factor = 2  # reduce 4 to 2 to get more data
-        save_path=os.path.join(os.getcwd(),'Predict_Result')
+        save_path=getOutputPath(params["output_folder"], 0)
         mkdir(save_path)
         save_path = os.path.join(save_path, indicate)
         mkdir(save_path)
@@ -118,7 +129,7 @@ if __name__ == "__main__":
             print("we only have 4 type predictions: simulated(0,1,2) and experimental map(3)")
             exit()
         factor = 2  # reduce 4 to 2 to get more data
-        save_path = os.path.join(os.getcwd(), 'Predict_Result_WithPDB')
+        save_path = getOutputPath(params["output_folder"], 1)
         mkdir(save_path)
         save_path = os.path.join(save_path, indicate)
         mkdir(save_path)
@@ -184,7 +195,7 @@ if __name__ == "__main__":
         assert type==3
         indicate="REAL"
         factor = 2  # reduce 4 to 2 to get more data
-        save_path0 = os.path.join(os.getcwd(), 'Predict_Result')
+        save_path0 = getOutputPath(params["output_folder"], 2)
         mkdir(save_path0)
         save_path0 = os.path.join(save_path0, indicate)
         mkdir(save_path0)
@@ -249,7 +260,7 @@ if __name__ == "__main__":
         assert type == 3
         indicate = "REAL"
         factor = 2  # reduce 4 to 2 to get more data
-        save_path0 = os.path.join(os.getcwd(), 'Predict_Result_WithPDB')
+        save_path0 = getOutputPath(params["output_folder"], 3)
         mkdir(save_path0)
         save_path0 = os.path.join(save_path0, indicate)
         mkdir(save_path0)
@@ -332,7 +343,7 @@ if __name__ == "__main__":
         assert type == 3
         indicate = "REAL"
         factor = 2  # reduce 4 to 2 to get more data
-        save_path0 = os.path.join(os.getcwd(), 'Predict_Result')
+        save_path0 = getOutputPath(params["output_folder"], 4)
         mkdir(save_path0)
         save_path0 = os.path.join(save_path0, "Binary")
         mkdir(save_path0)
@@ -374,7 +385,6 @@ if __name__ == "__main__":
                 Predict_Phase1(save_path, map_name, input_path,indicate, fold, batch_size,params)
             # visualize phase 1
 
-
             Visualize_Binary_Prediction(save_path, map_name, step1_pred_file, factor, 'Phase1')
             Visualize_Binary_Confident_Prediction(save_path, map_name, phase1_pred_file, factor, 'Phase1')
             Visualize_Binary_Prediction(save_path, map_name, step1_pred_file, factor, 'Phase2')
@@ -385,9 +395,3 @@ if __name__ == "__main__":
         final_pred_path = Combine_All_Predictions(save_path0, map_name, All_Output_File)
         Visualize_Binary_Prediction(save_path0, map_name, final_pred_path, factor, 'Final')
         Visualize_Binary_Confident_Prediction(save_path0, map_name, final_pred_path, factor, 'Final')
-
-
-
-
-
-

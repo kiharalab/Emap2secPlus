@@ -128,6 +128,7 @@ python3 main.py -h:
                         1: Detect and evaluate structures for EM map with pdb structure
                         2: Detect structure for experimental maps with 4 fold models
                         3: Detect and evaluate structure for experimental maps with 4 fold models
+                        4: Detect protein and DNA/RNA with 4 fold models
   --resize              0: resizing maps with numba optimized (some maps size are not supported); 
                         1: resizing maps with scipy (relatively slow but support almost all maps).
   -P P                  native structure path (PDB format) for evaluating model's performance (usually not available for real scenarios)

@@ -30,8 +30,8 @@
 
 # along with this program.  If not, see https://www.gnu.org/licenses/gpl-3.0.en.html.
 import os
-from ops.os_operation import mkdir
-def Build_Map(save_path,split_name,input_path,type,factor,contour_level):
+
+def Build_Map(save_path,split_name,input_path,type,factor,contour_level,compile=True):
     """
     :param input_path: path for map
     :param type: simulated map or real map
@@ -42,12 +42,13 @@ def Build_Map(save_path,split_name,input_path,type,factor,contour_level):
     #code path
     code_path0=os.path.join(os.getcwd(),'process_map')
     code_path=os.path.join(code_path0,'bin')
-    ##make the file automatically
-    root_path=os.getcwd()
-    os.chdir(code_path0)
-    os.system("make clean")
-    os.system("make")
-    os.chdir(root_path)
+    ##make the file automatically unless skipping compilation is specified
+    if compile:
+        root_path=os.getcwd()
+        os.chdir(code_path0)
+        os.system("make clean")
+        os.system("make")
+        os.chdir(root_path)
     code_path=os.path.join(code_path,'map2train')
     if type==3:
         commandline = code_path + ' ' + input_path + '  -r 3.0 -c ' + str(
@@ -60,7 +61,7 @@ def Build_Map(save_path,split_name,input_path,type,factor,contour_level):
     return output_path
 
 
-def Build_Map_WithStructure(save_path,split_name,input_path,type,factor,contour_level,pdb_path):
+def Build_Map_WithStructure(save_path,split_name,input_path,type,factor,contour_level,pdb_path,compile=True):
     """
     :param input_path: path for map
     :param type: simulated map or real map
@@ -73,12 +74,13 @@ def Build_Map_WithStructure(save_path,split_name,input_path,type,factor,contour_
     #code path
     code_path0=os.path.join(os.getcwd(),'process_map')
     code_path=os.path.join(code_path0,'bin')
-    ##make the file automatically
-    root_path=os.getcwd()
-    os.chdir(code_path0)
-    os.system("make clean")
-    os.system("make")
-    os.chdir(root_path)
+    ##make the file automatically unless skipping compilation is specified
+    if compile:
+        root_path=os.getcwd()
+        os.chdir(code_path0)
+        os.system("make clean")
+        os.system("make")
+        os.chdir(root_path)
     code_path=os.path.join(code_path,'map2train')
     if type==3:
         commandline = code_path + ' ' + input_path +' -P ' + pdb_path +  '  -r 3.0 -c ' + str(

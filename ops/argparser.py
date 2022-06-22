@@ -31,7 +31,6 @@
 # along with this program.  If not, see https://www.gnu.org/licenses/gpl-3.0.en.html.
 
 
-import parser
 import argparse
 
 def argparser():
@@ -54,6 +53,7 @@ def argparser():
     parser.add_argument('--drop_rate',type=float,default=0.3,help="Drop out rate for the phase2 Model")
     parser.add_argument('--fold',type=int,default=1,help='specify the fold Model used for predicting the real map')
     parser.add_argument('--output_folder',type=str,default="",help='specify a custom folder where results will be stored')
+    parser.add_argument('--no_compilation', action='store_false', help='skip automatic compilation before execution')
     args = parser.parse_args()
     # try:
     #     import ray,socket

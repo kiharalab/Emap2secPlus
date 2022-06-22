@@ -90,7 +90,7 @@ if __name__ == "__main__":
             shutil.copy(input_map,output_map)
         from process_map.Build_Map import Build_Map
         contour_level=params['contour']
-        trimmap_path = Build_Map(save_path,map_name,input_map, type, factor, contour_level)
+        trimmap_path = Build_Map(save_path,map_name,input_map, type, factor, contour_level, compile=params["no_compilation"])
         #prepare input for using Model to predict
         from prepare_data.Prepare_Input import Prepare_Input
         input_path = Prepare_Input(save_path,map_name,trimmap_path,factor)
@@ -155,7 +155,7 @@ if __name__ == "__main__":
             shutil.copy(input_map,output_map)
         from process_map.Build_Map import Build_Map_WithStructure
         contour_level = params['contour']
-        trimmap_path = Build_Map_WithStructure(save_path, map_name, input_map, type, factor, contour_level,pdb_path)
+        trimmap_path = Build_Map_WithStructure(save_path, map_name, input_map, type, factor, contour_level,pdb_path, compile=params["no_compilation"])
         from prepare_data.Gen_Stride import Gen_Stride
         stride_path = Gen_Stride(save_path,map_name,pdb_path)
         from prepare_data.Prepare_Input import Prepare_Input_WithStructure
@@ -218,7 +218,7 @@ if __name__ == "__main__":
         from process_map.Build_Map import Build_Map
 
         contour_level = params['contour']
-        trimmap_path = Build_Map(save_path0, map_name, input_map,type, factor, contour_level)
+        trimmap_path = Build_Map(save_path0, map_name, input_map,type, factor, contour_level, compile=params["no_compilation"])
         # prepare input for using Model to predict
         from prepare_data.Prepare_Input import Prepare_Input
 
@@ -283,7 +283,7 @@ if __name__ == "__main__":
 
         contour_level = params['contour']
         trimmap_path = Build_Map_WithStructure(save_path0, map_name, input_map, type, factor, contour_level,
-                                               pdb_path)
+                                               pdb_path, compile=params["no_compilation"])
         from prepare_data.Gen_Stride import Gen_Stride
 
         stride_path = Gen_Stride(save_path0, map_name, pdb_path)
@@ -364,7 +364,7 @@ if __name__ == "__main__":
         from process_map.Build_Map import Build_Map
 
         contour_level = params['contour']
-        trimmap_path = Build_Map(save_path0, map_name, input_map, type, factor, contour_level)
+        trimmap_path = Build_Map(save_path0, map_name, input_map, type, factor, contour_level, compile=params["no_compilation"])
 
         from prepare_data.Prepare_Input import Prepare_Input
 

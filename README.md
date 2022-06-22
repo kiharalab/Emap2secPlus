@@ -140,6 +140,7 @@ python3 main.py -h:
   --contour CONTOUR     Contour level for real map
   --fold FOLD           specify the fold model used for detecting the experimental map
   --output_folder       specify a custom folder where results will be stored (optional, default will be located in project root and name will depend on mode)
+  --no_compilation      using this optional argument will skip automatic compilation before running the project
 ```
 
 ### 1. Detect structures with EM maps

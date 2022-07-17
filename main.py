@@ -82,10 +82,7 @@ if __name__ == "__main__":
         from process_map.Reform_Map_Voxel import Reform_Map_Voxel,Reform_Map_Voxel_Final
         output_map=os.path.join(save_path,map_name+".mrc")
         if type==3:
-            if params['resize'] == 1:
-                input_map = Reform_Map_Voxel_Final(input_map, output_map)
-            else:
-                input_map = Reform_Map_Voxel(input_map, output_map)
+            input_map = Reform_Map_Voxel(input_map, output_map)
         else:
             shutil.copy(input_map,output_map)
         from process_map.Build_Map import Build_Map
@@ -147,10 +144,7 @@ if __name__ == "__main__":
 
         output_map = os.path.join(save_path, map_name + ".mrc")
         if type==3:
-            if params['resize'] == 1:
-                input_map = Reform_Map_Voxel_Final(input_map, output_map)
-            else:
-                input_map = Reform_Map_Voxel(input_map, output_map)
+            input_map = Reform_Map_Voxel(input_map, output_map)
         else:
             shutil.copy(input_map,output_map)
         from process_map.Build_Map import Build_Map_WithStructure
@@ -208,10 +202,7 @@ if __name__ == "__main__":
 
         output_map = os.path.join(save_path0, map_name + ".mrc")
         if type==3:
-            if params['resize'] == 1:
-                input_map = Reform_Map_Voxel_Final(input_map, output_map)
-            else:
-                input_map = Reform_Map_Voxel(input_map, output_map)
+            input_map = Reform_Map_Voxel(input_map, output_map)
         else:
             shutil.copy(input_map,output_map)
 
@@ -273,10 +264,7 @@ if __name__ == "__main__":
 
         output_map = os.path.join(save_path0, map_name + ".mrc")
         if type==3:
-            if params['resize'] == 1:
-                input_map = Reform_Map_Voxel_Final(input_map, output_map)
-            else:
-                input_map = Reform_Map_Voxel(input_map, output_map)
+            input_map = Reform_Map_Voxel(input_map, output_map)
         else:
             shutil.copy(input_map,output_map)
         from process_map.Build_Map import Build_Map_WithStructure
@@ -356,10 +344,7 @@ if __name__ == "__main__":
         from process_map.Reform_Map_Voxel import Reform_Map_Voxel, Reform_Map_Voxel_Final
 
         output_map = os.path.join(save_path0, map_name + ".mrc")
-        if params['resize'] == 1:
-            input_map = Reform_Map_Voxel_Final(input_map, output_map)
-        else:
-            input_map = Reform_Map_Voxel(input_map, output_map)
+        input_map = Reform_Map_Voxel(input_map, output_map)
 
         from process_map.Build_Map import Build_Map
 

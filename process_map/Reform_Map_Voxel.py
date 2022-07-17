@@ -175,6 +175,7 @@ def Reform_Map_Voxel_Final(map_path,new_map_path):
             print("nxs,nys,nzs",nxs,nys,nzs)
             print("mx,my,mz",mx,my,mz)
             data = mrc.data
+            mrc.close()
             data = np.swapaxes(data, 0, 2)
             size = np.shape(data)
             x = np.arange(size[0])
@@ -241,8 +242,9 @@ def Reform_Map_Voxel(map_path,new_map_path):
             #assert len(prev_voxel_size)==3
 
             if not(prev_voxel_size['x']==prev_voxel_size['y'] and prev_voxel_size['x']==prev_voxel_size['z']):
-                print("Grid size of different axis is different, please specify --resize=1 in command line to call another slow process to deal with it!")
-                exit(1)
+                mrc.close()
+                print("Grid size of different axis is different, resizing automatically.")
+                return Reform_Map_Voxel_Final(map_path, new_map_path)
             prev_voxel_size=float(prev_voxel_size['x'])
             nx, ny, nz, nxs, nys, nzs, mx, my, mz =\
                 mrc.header.nx, mrc.header.ny, mrc.header.nz, \
@@ -258,8 +260,9 @@ def Reform_Map_Voxel(map_path,new_map_path):
                 shutil.copy(map_path,new_map_path)
                 return new_map_path
             if (prev_voxel_size < 1):
-                print("Grid size is smaller than 1, please specify --resize=1 in command line to call another slow process to deal with it!")
-                exit(1)
+                mrc.close()
+                print("Grid size is smaller than 1, resizing automatically.")
+                return Reform_Map_Voxel_Final(map_path, new_map_path)
             it_val1 = int(np.floor(size[0] * prev_voxel_size))
             it_val2 = int(np.floor(size[1] * prev_voxel_size))
             it_val3 = int(np.floor(size[2] * prev_voxel_size))
@@ -302,6 +305,7 @@ def Reform_Map_Voxel(map_path,new_map_path):
             mrc.print_header()
             mrc_new.print_header()
             mrc_new.close()
+            mrc.close()
             del data
             del data_new
            # del out_1d

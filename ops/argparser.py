@@ -35,13 +35,11 @@ import argparse
 
 def argparser():
     parser = argparse.ArgumentParser()
-    parser.add_argument('-F',type=str, required=True,help='map path')#File path for our MAINMAST code
+    parser.add_argument('-F',type=str, required=True,help='map path')
     parser.add_argument('--mode',type=int,required=True,help='0: Predict structures for EM MAP\n'
                                                              '1: Predict structures for EM maps with pdb structure\n'
                                                              '2: Predict structure for experimental maps with 4 models\n'
                                                              '3: Predict and evaluate structure for experimental maps with 4 models\n' )
-    parser.add_argument('--resize',type=int,default=0,help="0: resizing maps with numba optimized (some maps size are not supported);\n"
-                                                           "1: resizing maps with scipy (relatively slow but support almost all maps).")
     parser.add_argument('-P',type=str,default="",help="PDB path for evaluating Model's performance")
     parser.add_argument('-M',type=str,default="best_model",help="Trained model path which saved all the trained models")
     parser.add_argument('--type',type=int,help='0:simulated map at 6 A 1: simulated map at 10 A 2: simulated map at 6-10 A 3:experimental map')
@@ -55,10 +53,5 @@ def argparser():
     parser.add_argument('--output_folder',type=str,default="",help='specify a custom folder where results will be stored')
     parser.add_argument('--no_compilation', action='store_false', help='skip automatic compilation before execution')
     args = parser.parse_args()
-    # try:
-    #     import ray,socket
-    #     rayinit()
-    # except:
-    #     print('ray need to be installed')#We do not need this since GAN can't be paralleled.
     params = vars(args)
     return params

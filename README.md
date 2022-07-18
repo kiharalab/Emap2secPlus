@@ -129,8 +129,6 @@ python3 main.py -h:
                         2: Detect structure for experimental maps with 4 fold models
                         3: Detect and evaluate structure for experimental maps with 4 fold models
                         4: Detect protein and DNA/RNA with 4 fold models
-  --resize              0: resizing maps with numba optimized (some maps size are not supported); 
-                        1: resizing maps with scipy (relatively slow but support almost all maps).
   -P P                  native structure path (PDB format) for evaluating model's performance (usually not available for real scenarios)
   -M                    Trained model path which saved all the trained models
   --type TYPE           0:simulated map at 6 Å 1: simulated map at 10 Å 2:simulated map at 6-10 Å 3:experimental map
@@ -149,7 +147,6 @@ python3 main.py --mode=0 -F=[Map_path] --type=[Map_Type] --gpu=0 --class=4 --con
 ```
 Here [Map_path] is the cryo-EM map file path in your computer. [Map_Type] should be specified based on your input map type, which will be used to load proper pre-trained model. [contour_level] and [Choose_Fold] only need to be specified for experimental maps.             
 Output will be saved in "Predict_Result/[Map_Type]/[Input_Map_Name]".       
-If the map grid size is smaller than 1, you also need to specify –-resize=1 to resize the grid size in the command line. This will make the program run slower than the default mode. 
 ### 2. Evaluate Performance (only when the correct underlined structure in the map is known)
 #### In the case that you are testing the software with a case, you can check the accuracy of the structure detection by Emap2sec+ by comparing the result with the known structure. This mode cannot be used in real scenarios where the native structure is not available. We usually use the mode to evaluate Emap2sec+ performance on testing dataset with known structures to verify its performance. This mode is also useful to measure the difference of the detected structure by Emap2sec+ with the structure currently assigned to the EM map.
 ```
@@ -184,7 +181,6 @@ python3 main.py --mode=0 -F=[Map_path] -M=[model_path] --type=3 --gpu=0 --class=
 ```
 Here [Map_path] is the cryo-EM map file path in your computer. [model_path] should be specified based on the trained model location downloaded from [kiharalab](https://kiharalab.org/emsuites/emap2secplus_model/nocontour_best_model.tar.gz). [Choose_Fold] is used to specify the fold model used for inference.             
 Output will be saved in "Predict_Result/[Map_Type]/[Input_Map_Name]".       
-If the map grid size is smaller than 1, you also need to specify –-resize=1 to resize the grid size in the command line. This will make the program run slower than the default mode. 
 #### 6.2 Detect Structures with 4 fold networks
 ```
 python3 main.py --mode=2 -F=[Map_path] -M=[model_path] --type=3 --gpu=0 --class=4 --contour=0
@@ -222,7 +218,7 @@ Command line
 ```
 python3 main.py --mode=0 -F=test_example/SIMU10/5T5K.mrc --type=1 --gpu=0 --class=4 
 ```
-If the map grid size is smaller than 1, you also need to specify –-resize=1 to resize the grid size in the command line. This will make the command run slower than the default mode. The example input map is included in [5T5K](https://kiharalab.org/github_data/emap2secplus_data/SIMU10).Our detailed results are saved in [5T5K_Result](https://kiharalab.org/github_data/emap2secplus_predict_example/SIMU10).
+The example input map is included in [5T5K](https://kiharalab.org/github_data/emap2secplus_data/SIMU10).Our detailed results are saved in [5T5K_Result](https://kiharalab.org/github_data/emap2secplus_predict_example/SIMU10).
 
 #### 2 Visualize Result
 Results are saved in Predict_Result/SIMU10/[Input_Map_Name]. Phase 1 and Phase 2 visualization results (Pymol sessions) are saved in “Phase1” and “Phase2” sub-directory, respectively. You will find generated *.pml files generated to visualize. Please use “pymol -u *.pml” to visualize the final structure detection result. If you want to only see very confident detection results, run “pymol -u *C.pml” using another visualization file named "*C.pml", which only includes confident detections with a probability>=0.9.
@@ -256,7 +252,7 @@ Command line:
 ```
 python3 main.py --mode=0 -F=test_example/REAL/6BJS.mrc --type=3 --gpu=0 --class=4 --fold=3 -–contour=0.006 
 ```
-If the map grid size is smaller than 1, you also need to specify –-resize=1 to resize the grid size in the command line. This will make the command run slower than the default mode. The example input map is included in [6BJS](https://kiharalab.org/github_data/emap2secplus_data/REAL), which is in the fold 3 testing dataset. Our detailed results are saved in [6BJS_Result](https://kiharalab.org/github_data/emap2secplus_predict_example/REAL).
+The example input map is included in [6BJS](https://kiharalab.org/github_data/emap2secplus_data/REAL), which is in the fold 3 testing dataset. Our detailed results are saved in [6BJS_Result](https://kiharalab.org/github_data/emap2secplus_predict_example/REAL).
 
 #### 2 Visualize Result
 Results are saved in Predict_Result/REAL/Fold3_Model_Result/[Input_Map_Name]. Phase 1 and Phase 2 visualization results (Pymol sessions) are saved in “Phase1” and “Phase2” sub-directory, respectively. You will find generated *.pml files generated to visualize. Please use “pymol -u *.pml” to visualize the final structure detection result. If you want to only see very confident detection results, run “pymol -u *C.pml” using another visualization file named "*C.pml", which only includes confident detections with a probability>=0.9.
@@ -291,7 +287,7 @@ Command line:
 ```
 python3 main.py --mode=2 -F=test_example/REAL_Vote/5WCB.mrc --type=3 --gpu=0 --class=4 -–contour=0.0332
 ```
-If the map grid size is smaller than 1, you also need to specify –-resize=1 to resize the grid size in the command line. This will make the command run slower than the default mode. The example input map is included in [5WCB](https://kiharalab.org/github_data/emap2secplus_data/REAL_Vote), which is a previous example in Emap2sec paper. This example also proves our method can work on EM maps without DNA/RNA. Our output results are saved in [Real_Vote](https://kiharalab.org/github_data/emap2secplus_predict_example/REAL_Vote).
+The example input map is included in [5WCB](https://kiharalab.org/github_data/emap2secplus_data/REAL_Vote), which is a previous example in Emap2sec paper. This example also proves our method can work on EM maps without DNA/RNA. Our output results are saved in [Real_Vote](https://kiharalab.org/github_data/emap2secplus_predict_example/REAL_Vote).
 
 #### 2 Visualize Result
 Results are saved in Predict_Result/REAL/[Input_Map_Name]. Phase 1 and Phase 2 visualization results (Pymol sessions) are saved in “Phase1” and “Phase2” sub-directory, respectively. You will find generated *.pml files generated to visualize. Please use “pymol -u *.pml” to visualize the final structure detection result. If you want to only see very confident detection results, run “pymol -u *C.pml” using another visualization file named "*C.pml", which only includes confident detections with a probability>=0.9.

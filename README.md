@@ -29,6 +29,8 @@ Xiao Wang, Eman Alnabati, Tunde W Aderinwale, Sai Raghavendra Maddhuri Venkata S
 ```
 
 ## Project website: http://kiharalab.org/emsuites/emap2secplus.php
+## Online Platform: https://doi.org/10.24433/CO.7165707.v1 (Run easily and freely)
+
 ## Simulated Map Dataset: [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4602627.svg)](https://doi.org/10.5281/zenodo.4602627)
 
 ## Introduction

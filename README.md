@@ -12,7 +12,7 @@ Emap2sec+ is a computational tool using deep learning that can accurately identi
 
 Copyright (C) 2020 Xiao Wang, Eman Alnabati, Tunde W Aderinwale, Sai Raghavendra Maddhuri, Genki Terashi, Daisuke Kihara, and Purdue University. 
 
-License: GPL v3 for academic use. (For commercial use, please contact us for different licensing.)
+License: GPL v3. (If you are interested in a different license, for example, for commercial use, please contact us.) 
 
 Contact: Daisuke Kihara (dkihara@purdue.edu)
 

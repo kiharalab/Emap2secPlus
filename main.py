@@ -331,16 +331,11 @@ if __name__ == "__main__":
         assert type == 3
         indicate = "REAL"
         factor = 2  # reduce 4 to 2 to get more data
-        save_path0 = getOutputPath(params["output_folder"], 4)
-        mkdir(save_path0)
-        save_path0 = os.path.join(save_path0, "Binary")
-        mkdir(save_path0)
-        save_path0 = os.path.join(save_path0, indicate)
-        mkdir(save_path0)
         name_split = os.path.split(input_map)
         map_name = name_split[1]
         map_name = map_name.split(".")[0]
-        save_path0 = os.path.join(save_path0, map_name)
+        save_path0 = os.path.join(getOutputPath(params["output_folder"], 4), "Binary", indicate, map_name)
+        mkdir(save_path0)
         from process_map.Reform_Map_Voxel import Reform_Map_Voxel, Reform_Map_Voxel_Final
 
         output_map = os.path.join(save_path0, map_name + ".mrc")

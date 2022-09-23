@@ -7,6 +7,9 @@
    <img src="https://img.shields.io/badge/dependencies-tested-green">
    <img src="https://img.shields.io/badge/licence-GNU-green">
 </a>           
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/50850224/192009827-61c1dcf2-89bf-4154-8424-ef31be522821.png" width="300">
+</p>
 
 Emap2sec+ is a computational tool using deep learning that can accurately identify structures, alpha helices, beta sheets, other(coils/turns) and DNA/RNA, in cryo-Electron Microscopy (EM) maps of medium to low resolution.  
 
@@ -29,7 +32,9 @@ Xiao Wang, Eman Alnabati, Tunde W Aderinwale, Sai Raghavendra Maddhuri Venkata S
 ```
 
 ## Project website: http://kiharalab.org/emsuites/emap2secplus.php
-## Online Platform: https://doi.org/10.24433/CO.7165707.v1 (Run easily and freely)
+## Online Platform: 
+### 1 Colab: https://bit.ly/emap2secplus or https://github.com/kiharalab/Emap2secPlus/blob/master/Emap2sec%2B.ipynb
+### 2 CodeOcean: https://doi.org/10.24433/CO.7165707.v1 
 
 ## Simulated Map Dataset: [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4602627.svg)](https://doi.org/10.5281/zenodo.4602627)
 

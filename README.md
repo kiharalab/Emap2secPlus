@@ -105,6 +105,7 @@ pip3 install numpy==1.18.5
 pip3 install numba
 pip3 install torch==1.1.0
 pip3 install scipy==1.4.1
+pip3 install scikit-learn
 ```
 
 #### 3.2 Install with anaconda
@@ -114,12 +115,15 @@ pip3 install scipy==1.4.1
 conda create -n Emap python=3.6.9
 conda activate Emap
 pip install -r requirements.txt 
+conda install pytorch==1.1.0 cudatoolkit=10.0 -c pytorch
 ```
 Each time when you want to run my code, simply activate the environment by
 ```
 conda activate Emap
 conda deactivate(If you want to exit) 
 ```
+Note that CUDA 10 is needed for the software. If your system-wide installation has a different version, you might need to intall CUDA 10 with conda if you want to keep the current system version.
+
 #### 4. Downloading the model files and example files.
 Due to the data quota limit of github, our model can't be kept in this repo. Please download them [here](https://kiharalab.org/emsuites/emap2secplus_model/) and put them in the Emap2secPlus directory. Two different types of model are included here. best_model.tar.gz includes all trained models based on author recommended contour level. nocontour_best_model.tar.gz	includes all trained models without the author contour level.
 

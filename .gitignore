@@ -4,3 +4,5 @@ nocontour_best_model/
 best_model.tar.gz
 nocontour_best_model.tar.gz
 __pycache__/
+.DS_Store
+*.o

@@ -48,16 +48,6 @@ using namespace std;
 
 bool VERBOSE = false;
 
-static string formatFilenamePrefix(string s, string c){
-	if(s.find("%s") == std::string::npos){
-		return s + c;
-	}else{
-		char buf[1024];
-		sprintf(buf, s.c_str(), c.c_str());
-		return string(buf);
-	}
-}
-
 static bool endsWith(const string &a, const string &b){
 	return a.size() >= b.size() && a.compare(a.size()-b.size(), b.size(), b) == 0;
 }
@@ -230,8 +220,6 @@ int main(int argc, char** argv)
 	string outFilePrefix;
 	string pdbFile;
 	bool isGzipped = false;
-	bool dmode = false;
-	bool imode = false;
 	//Genki
 	bool usePdb = false;
 	double rad = 5.00;// default distance
@@ -490,11 +478,9 @@ int main(int argc, char** argv)
 
 	try{
 		Grid<double> g(*f, type);
-		int Nact,Nact_pre;
 		if(VERBOSE) cerr << "[info] Successfully read the input file." << endl;
 
 		if(usePdb == true){
-	 	 int cacnt=0;
 		 Grid<double> pass(g,contour,P,rad,Vwindow,vstep,sstep,gnorm,igstart);
 		}else{
 		 Grid<double> pass(g,contour,rad,Vwindow,vstep,sstep,gnorm);

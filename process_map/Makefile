@@ -45,7 +45,7 @@ default:	map2train
 all:	map2train
 
 map2train:	main.cpp Grid.hpp
-	cd gzstream; make
+	cd gzstream; make -s
 	mkdir -p $(BIN_DIR)
 	$(CXX)  	main.cpp -o $(BIN_DIR)/map2train $(OPTIM) $(XFLAGS) $(LFLAGS) 
 	$(CXX) -g -pg  main.cpp -o $(BIN_DIR)/map2train_debug $(XFLAGS) $(LFLAGS) 
@@ -53,7 +53,7 @@ map2train:	main.cpp Grid.hpp
 clean:
 	rm -f $(OBJ_FILES)
 	rm -rf $(BIN_DIR)
-	cd gzstream; make cleanall
+	cd gzstream; make -s cleanall
 
 package:	map2zernike
 	mkdir -p map2zernike

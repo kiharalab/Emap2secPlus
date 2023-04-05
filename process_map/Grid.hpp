@@ -37,6 +37,7 @@
 #include <stdexcept>
 #include <cmath>
 #include <algorithm>
+#include <limits>
 #include "pdb.h"
 
 using std::cerr;
@@ -128,14 +129,20 @@ static int read_int_istream(istream &fin, bool swap) {
 
 template<typename Value>
 void Grid<Value>::set(size_t x, size_t y, size_t z, Value val){
-	if(x>=xdim || y>=ydim || z>=zdim){
+	if(x > static_cast<size_t>(std::numeric_limits<int>::max()) ||
+		y > static_cast<size_t>(std::numeric_limits<int>::max()) ||
+		z > static_cast<size_t>(std::numeric_limits<int>::max()) ||
+		static_cast<int>(x)>=xdim || static_cast<int>(y)>=ydim || static_cast<int>(z)>=zdim){
 		throw std::out_of_range("Attempted to access invalid grid position ("+to_string(x)+","+to_string(y)+","+to_string(z)+"), dimensions are ("+to_string(xdim)+","+to_string(ydim)+","+to_string(zdim)+").");
 	}
 	vec[(z*ydim+ y)*xdim + x] = val;
 }
 template<typename Value>
 Value Grid<Value>::get(size_t x, size_t y, size_t z){
-	if(x>=xdim || y>=ydim || z>=zdim){
+	if(x > static_cast<size_t>(std::numeric_limits<int>::max()) ||
+		y > static_cast<size_t>(std::numeric_limits<int>::max()) ||
+		z > static_cast<size_t>(std::numeric_limits<int>::max()) ||
+		static_cast<int>(x)>=xdim || static_cast<int>(y)>=ydim || static_cast<int>(z)>=zdim){
 		throw std::out_of_range("Attempted to access invalid grid position ("+to_string(x)+","+to_string(y)+","+to_string(z)+"), dimensions are ("+to_string(xdim)+","+to_string(ydim)+","+to_string(zdim)+").");
 	}
 	return vec[(z*ydim+ y)*xdim + x];
@@ -807,9 +814,6 @@ Grid<Value>::Grid(Grid &g, Value contour,vector<atom> &P,double r,int Vw,int vst
 	int cnt=0;
 	//double r2=r*r/((g.stepx*g.stepx)+(g.stepy*g.stepy)+(g.stepz*g.stepz));
 	double r2=r*r;
-	double rvx2=1/(g.stepx*g.stepx);
-	double rvy2=1/(g.stepy*g.stepy);
-	double rvz2=1/(g.stepz*g.stepz);
 	numVoxels = g.numVoxels;
 
 	int Nclose,ListClose[100];
@@ -847,7 +851,7 @@ Grid<Value>::Grid(Grid &g, Value contour,vector<atom> &P,double r,int Vw,int vst
 
 	double dmax,dmin;
 	dmax=0;dmin=1000000;
-	for(int i=0;i<numVoxels;i++){
+	for(size_t i=0;i<numVoxels;i++){
 	 if(vec[i]>dmax)
 	  dmax=vec[i];
 	 if(vec[i]<dmin && vec[i] != 0)
@@ -855,11 +859,11 @@ Grid<Value>::Grid(Grid &g, Value contour,vector<atom> &P,double r,int Vw,int vst
 	}
 	int useful_voxel=0;
 	int zero_voxel=0;
-	for(int i=0;i<numVoxels;i++){
-	 if(vec[i]>dmin)
-	  useful_voxel+=1;
-	  if(vec[i]==0)
-	  zero_voxel+=1;
+	for(size_t i=0;i<numVoxels;i++){
+		if(vec[i]>dmin)
+	  		useful_voxel+=1;
+	  	if(vec[i]==0)
+	  		zero_voxel+=1;
 	}
 
 	cerr<<"we should have voxles as output:"<<useful_voxel<<endl;
@@ -891,7 +895,7 @@ Grid<Value>::Grid(Grid &g, Value contour,vector<atom> &P,double r,int Vw,int vst
 		double d2;
 		Nclose=0;
 		int mark_rna_use=0;
-		for(int pos=0;pos<P.size();pos++){
+		for(std::vector<atom>::size_type pos=0;pos<P.size();pos++){
 		 if(P[pos].atype == "CA"||P[pos].atype == "N"||P[pos].atype == "C"||P[pos].atype == "O"||P[pos].atype=="RNA"){
 		  //real space based coordinates
 
@@ -1023,10 +1027,6 @@ Grid<Value>::Grid(Grid &g, Value contour,double r,int Vw,int vstep,int sstep,boo
 	zdim = g.zdim;
 	int cnt=0;
 	//double r2=r*r/((g.stepx*g.stepx)+(g.stepy*g.stepy)+(g.stepz*g.stepz));
-	double r2=r*r;
-	double rvx2=1/(g.stepx*g.stepx);
-	double rvy2=1/(g.stepy*g.stepy);
-	double rvz2=1/(g.stepz*g.stepz);
 	numVoxels = g.numVoxels;
 
 	vec.reserve(numVoxels);
@@ -1052,7 +1052,7 @@ Grid<Value>::Grid(Grid &g, Value contour,double r,int Vw,int vstep,int sstep,boo
 
 	double dmax,dmin;
 	dmax=0;dmin=1000000;
-	for(int i=0;i<numVoxels;i++){
+	for(size_t i=0;i<numVoxels;i++){
 	 if(vec[i]>dmax)
 	  dmax=vec[i];
 	 if(vec[i]<dmin && vec[i] != 0)

@@ -31,19 +31,39 @@
 # along with this program.  If not, see https://www.gnu.org/licenses/gpl-3.0.en.html.
 
 import os
+import sys
 import torch
-from ops.os_operation import mkdir
 import numpy as np
 from torch.autograd import Variable
 from torch import nn
 import torch.nn.functional as F
 from scipy.special import softmax
 
+# Importing error codes from main
+current_dir = os.path.dirname(os.path.abspath(__file__))
+main_dir = os.path.join(current_dir, '../')
+sys.path.append(main_dir)
+from main import ErrorCodes
+
+def controlExecution(function, *args):
+    """
+    This function attepts to run the given function with arguments, and
+    cotrols the possible exception ocurred during such execution.
+    """
+    separator = ErrorCodes.CODE_MESSAGE_SEPARATOR.value
+    try:
+        return function(*args)
+    except RuntimeError as rte:
+        # Capturing RuntimeError (most likely CUDA out of memory)
+        raise RuntimeError(str(ErrorCodes.CUDA_OUT_OF_MEMORY_CODE.value) + separator + str(rte))
+    except Exception as e:
+        # Capturing rest of exceptions
+        raise Exception(str(ErrorCodes.DEFULT_ERROR_CODE.value) + separator + str(e))
+
 def Predict_Phase1(save_path,map_name,input_path,indicate,fold,batch_size,params):
     input_size = 11
     dimension = input_size
     n_classes = 4
-    final_classes = 4
     #model_path=os.path.join(os.getcwd(),'best_model')
     model_path = os.path.abspath(params['M'])
     model_path=os.path.join(model_path,indicate)
@@ -98,7 +118,6 @@ def Predict_Phase1(save_path,map_name,input_path,indicate,fold,batch_size,params
                 line=line.strip()
                 split_result=line.split()
                 tmp_key=split_result[0]
-                tmp_label=split_result[1]
                 tmp_pred=[]
                 for k in range(n_classes):
                     tmp_pred.append(float(split_result[k+2]))
@@ -148,27 +167,27 @@ def Predict_Phase1(save_path,map_name,input_path,indicate,fold,batch_size,params
                 # print(input_data.size())
                 input_data = Variable(input_data)
                 with torch.no_grad():
-                    output, p1, p2 = coil_model(input_data)
+                    output = controlExecution(coil_model, input_data)[0]
                     # print(output.size())
                     output = F.softmax(output, dim=1)
                 coil_array = output.cpu()
                 coil_array = coil_array.detach().numpy()
                 with torch.no_grad():
-                    output, p1, p2 = beta_model(input_data)
+                    output = beta_model(input_data)[0]
                     # print(output.size())
                     output = F.softmax(output, dim=1)
                 beta_array = output.cpu()
                 beta_array = beta_array.detach().numpy()
 
                 with torch.no_grad():
-                    output, p1, p2 = alpha_model(input_data)
+                    output = alpha_model(input_data)[0]
                     # print(output.size())
                     output = F.softmax(output, dim=1)
                 alpha_array = output.cpu()
                 alpha_array = alpha_array.detach().numpy()
 
                 with torch.no_grad():
-                    output, p1, p2 = drna_model(input_data)
+                    output = drna_model(input_data)[0]
                     # print(output.size())
                     output = F.softmax(output, dim=1)
                 drna_array = output.cpu()
@@ -188,7 +207,6 @@ def Predict_Phase1(save_path,map_name,input_path,indicate,fold,batch_size,params
                     tmp_phase2_input.append(float(drna_array[i, 1]))
                     tmp_all_output = output2array[i]
                     tmp_phase2_input += list(tmp_all_output)
-                    tmp_phase2_output = outout_list[i]
                     Position_Order_List.append(tmp_key)
                     Prediction_Dict[tmp_key] = tmp_phase2_input
                     #Output_Dict[tmp_key] = tmp_phase2_output

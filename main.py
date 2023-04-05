@@ -33,10 +33,18 @@ import os
 from ops.argparser import argparser
 from ops.os_operation import mkdir
 import shutil
+from enum import Enum
 
 # Defining constants
 RESULT_DEFAULT_FOLDER = 'Predict_Result'
 RESULT_WITH_PDB_DEFAULT_FOLDER = 'Predict_Result_WithPDB'
+
+# Error codes
+class ErrorCodes(Enum):
+    CODE_MESSAGE_SEPARATOR = "<-->" # Something that shouldn't be found in the exception string by chance
+    DEFULT_ERROR_CODE = 1
+    CUDA_OUT_OF_MEMORY_CODE = 2
+    WRONG_PARAMETER_CODE = 3
 
 def getOutputPath(custom_path, mode):
     """ This function returns the output path for the results. """
@@ -44,6 +52,14 @@ def getOutputPath(custom_path, mode):
         return custom_path
     relative_default_path = RESULT_WITH_PDB_DEFAULT_FOLDER if (mode == 1 or mode == 3) else RESULT_DEFAULT_FOLDER
     return os.path.join(os.getcwd(), relative_default_path)
+
+def splitException(exception):
+    """ This function extracts the error message and the error code from a custom error coded exception """
+    exception = str(exception)
+    splitIndex = exception.find(ErrorCodes.CODE_MESSAGE_SEPARATOR.value)
+    if splitIndex == -1:
+        return ErrorCodes.DEFULT_ERROR_CODE.value, exception
+    return int(exception[0:splitIndex]), exception[splitIndex + len(ErrorCodes.CODE_MESSAGE_SEPARATOR.value):]
 
 if __name__ == "__main__":
     params = argparser()
@@ -63,7 +79,7 @@ if __name__ == "__main__":
             indicate='REAL'
         else:
             print("we only have 4 type predictions: simulated(0,1,2) and experimental map(3)")
-            exit()
+            exit(ErrorCodes.WRONG_PARAMETER_CODE)
         factor = 2  # reduce 4 to 2 to get more data
         save_path=getOutputPath(params["output_folder"], 0)
         mkdir(save_path)
@@ -95,8 +111,14 @@ if __name__ == "__main__":
 
         batch_size=params['batch_size']
         from evaluate.Predict_Phase1 import Predict_Phase1
-        phase1_pred_dict,phase1_pred_file,step1_pred_file=\
-            Predict_Phase1(save_path,map_name,input_path,indicate,fold,batch_size,params)
+        try:
+            phase1_pred_dict,phase1_pred_file,step1_pred_file=\
+                Predict_Phase1(save_path,map_name,input_path,indicate,fold,batch_size,params)
+        except RuntimeError as rte:
+            # Formatting and printing the exception
+            code, message = splitException(rte)
+            print(message)
+            exit(code)
         #visualize phase 1
         from evaluate.Visualize_Prediction import Visualize_Prediction,Visualize_Confident_Prediction
         Visualize_Prediction(save_path, map_name, step1_pred_file,  factor, 'Phase1')
@@ -124,7 +146,7 @@ if __name__ == "__main__":
             indicate = 'REAL'
         else:
             print("we only have 4 type predictions: simulated(0,1,2) and experimental map(3)")
-            exit()
+            exit(ErrorCodes.WRONG_PARAMETER_CODE)
         factor = 2  # reduce 4 to 2 to get more data
         save_path = getOutputPath(params["output_folder"], 1)
         mkdir(save_path)

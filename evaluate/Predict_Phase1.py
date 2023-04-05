@@ -49,17 +49,16 @@ def controlExecution(function, *args):
     """
     This function attepts to run the given function with arguments, and
     cotrols the possible exception ocurred during such execution.
-    Color red is added to the exception message.
     """
     separator = ErrorCodes.CODE_MESSAGE_SEPARATOR.value
     try:
         return function(*args)
     except RuntimeError as rte:
         # Capturing RuntimeError (most likely CUDA out of memory)
-        raise RuntimeError(str(ErrorCodes.CUDA_OUT_OF_MEMORY_CODE.value) + separator + "\033[31m" + str(rte) + "\033[0m")
+        raise RuntimeError(str(ErrorCodes.CUDA_OUT_OF_MEMORY_CODE.value) + separator + str(rte))
     except Exception as e:
         # Capturing rest of exceptions
-        raise Exception(str(ErrorCodes.DEFULT_ERROR_CODE.value) + separator + "\033[31m" + str(e) + "\033[0m")
+        raise Exception(str(ErrorCodes.DEFULT_ERROR_CODE.value) + separator + str(e))
 
 def Predict_Phase1(save_path,map_name,input_path,indicate,fold,batch_size,params):
     input_size = 11

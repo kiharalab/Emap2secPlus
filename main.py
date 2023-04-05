@@ -54,12 +54,15 @@ def getOutputPath(custom_path, mode):
     return os.path.join(os.getcwd(), relative_default_path)
 
 def splitException(exception):
-    """ This function extracts the error message and the error code from a custom error coded exception """
+    """
+    This function extracts the error message and the error code from a custom error coded exception.
+    Color red is added to the exception message.
+    """
     exception = str(exception)
     splitIndex = exception.find(ErrorCodes.CODE_MESSAGE_SEPARATOR.value)
     if splitIndex == -1:
-        return ErrorCodes.DEFULT_ERROR_CODE.value, exception
-    return int(exception[0:splitIndex]), exception[splitIndex + len(ErrorCodes.CODE_MESSAGE_SEPARATOR.value):]
+        return ErrorCodes.DEFULT_ERROR_CODE.value, "\033[31m" + exception + "\033[0m"
+    return int(exception[0:splitIndex]), "\033[31m" + exception[splitIndex + len(ErrorCodes.CODE_MESSAGE_SEPARATOR.value):] + "\033[0m"
 
 if __name__ == "__main__":
     params = argparser()

@@ -61,8 +61,21 @@ def splitException(exception):
     exception = str(exception)
     splitIndex = exception.find(ErrorCodes.CODE_MESSAGE_SEPARATOR.value)
     if splitIndex == -1:
-        return ErrorCodes.DEFULT_ERROR_CODE.value, "\033[31m" + exception + "\033[0m"
+        return 1, ErrorCodes.DEFULT_ERROR_CODE.value, "\033[31m" + exception + "\033[0m"
     return int(exception[0:splitIndex]), "\033[31m" + exception[splitIndex + len(ErrorCodes.CODE_MESSAGE_SEPARATOR.value):] + "\033[0m"
+
+def execute_with_exceptions(function, *args):
+    """
+    This function executes a function and captures the custom exception, prints it through terminal,
+    and exits with the generated code.
+    """
+    try:
+        return function(*args)
+    except Exception as e:
+        # Formatting and printing the exception
+        code, message = splitException(e)
+        print(message)
+        exit(code)
 
 if __name__ == "__main__":
     params = argparser()
@@ -114,14 +127,8 @@ if __name__ == "__main__":
 
         batch_size=params['batch_size']
         from evaluate.Predict_Phase1 import Predict_Phase1
-        try:
-            phase1_pred_dict,phase1_pred_file,step1_pred_file=\
-                Predict_Phase1(save_path,map_name,input_path,indicate,fold,batch_size,params)
-        except RuntimeError as rte:
-            # Formatting and printing the exception
-            code, message = splitException(rte)
-            print(message)
-            exit(code)
+        phase1_pred_dict,phase1_pred_file,step1_pred_file=\
+            execute_with_exceptions(Predict_Phase1, save_path,map_name,input_path,indicate,fold,batch_size,params)
         #visualize phase 1
         from evaluate.Visualize_Prediction import Visualize_Prediction,Visualize_Confident_Prediction
         Visualize_Prediction(save_path, map_name, step1_pred_file,  factor, 'Phase1')
@@ -192,8 +199,7 @@ if __name__ == "__main__":
         from evaluate.Predict_Phase1 import Predict_Phase1
 
         phase1_pred_dict, phase1_pred_file,step1_pred_file = \
-            Predict_Phase1(save_path, map_name, input_path, indicate, fold, batch_size,params)
-
+            execute_with_exceptions(Predict_Phase1, save_path, map_name, input_path, indicate, fold, batch_size,params)
 
         Visualize_Prediction_WithStructure(save_path, map_name, step1_pred_file, factor, real_loc_refer, 'Phase1')
         Visualize_Confident_Prediction_WithStructure(save_path, map_name, step1_pred_file, factor, real_loc_refer,
@@ -250,7 +256,7 @@ if __name__ == "__main__":
             from evaluate.Predict_Phase1 import Predict_Phase1
 
             phase1_pred_dict, phase1_pred_file,step1_pred_file = \
-                Predict_Phase1(save_path, map_name, input_path, indicate, fold, batch_size,params)
+                execute_with_exceptions(Predict_Phase1, save_path, map_name, input_path, indicate, fold, batch_size,params)
             # visualize phase 1
             from evaluate.Visualize_Prediction import Visualize_Prediction, Visualize_Confident_Prediction
 
@@ -317,7 +323,7 @@ if __name__ == "__main__":
             from evaluate.Predict_Phase1 import Predict_Phase1
 
             phase1_pred_dict, phase1_pred_file,step1_pred_file = \
-                Predict_Phase1(save_path, map_name, input_path, indicate, fold,batch_size,params)
+                execute_with_exceptions(Predict_Phase1, save_path, map_name, input_path, indicate, fold,batch_size,params)
             # visualize phase 1
             from evaluate.Visualize_Prediction_WithStructure import Visualize_Prediction_WithStructure, \
                 Visualize_Confident_Prediction_WithStructure
@@ -387,7 +393,7 @@ if __name__ == "__main__":
             from evaluate.Predict_Phase1 import Predict_Phase1
 
             phase1_pred_dict, phase1_pred_file, step1_pred_file = \
-                Predict_Phase1(save_path, map_name, input_path,indicate, fold, batch_size,params)
+                execute_with_exceptions(Predict_Phase1, save_path, map_name, input_path,indicate, fold, batch_size,params)
             # visualize phase 1
 
             Visualize_Binary_Prediction(save_path, map_name, step1_pred_file, factor, 'Phase1')

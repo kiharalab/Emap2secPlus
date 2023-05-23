@@ -99,17 +99,18 @@ if __name__ == "__main__":
         factor = 2  # reduce 4 to 2 to get more data
         save_path=getOutputPath(params["output_folder"], 0)
         mkdir(save_path)
-        save_path = os.path.join(save_path, indicate)
-        mkdir(save_path)
-        fold = params['fold']  # specify use which fold Model based on real map
-        if type==3:
-            save_path = os.path.join(save_path, "Fold%d_Model_Result"%fold)
+        if not params['output_folder']:
+            save_path = os.path.join(save_path, indicate)
             mkdir(save_path)
-        name_split=os.path.split(input_map)
-        map_name=name_split[1]
-        map_name=map_name.split(".")[0]
-        save_path=os.path.join(save_path,map_name)
-        mkdir(save_path)
+            fold = params['fold']  # specify use which fold Model based on real map
+            if type==3:
+                save_path = os.path.join(save_path, "Fold%d_Model_Result"%fold)
+                mkdir(save_path)
+            name_split=os.path.split(input_map)
+            map_name=name_split[1]
+            map_name=map_name.split(".")[0]
+            save_path=os.path.join(save_path,map_name)
+            mkdir(save_path)
         # reform the map voxel size to 1A instead of experimental voxel size
         from process_map.Reform_Map_Voxel import Reform_Map_Voxel,Reform_Map_Voxel_Final
         output_map=os.path.join(save_path,map_name+".mrc")
@@ -160,17 +161,18 @@ if __name__ == "__main__":
         factor = 2  # reduce 4 to 2 to get more data
         save_path = getOutputPath(params["output_folder"], 1)
         mkdir(save_path)
-        save_path = os.path.join(save_path, indicate)
-        mkdir(save_path)
-        fold = params['fold']  # specify use which fold Model based on real map
-        if type == 3:
-            save_path = os.path.join(save_path, "Fold%d_Model_Result" % fold)
+        if not params['output_folder']:
+            save_path = os.path.join(save_path, indicate)
             mkdir(save_path)
-        name_split = os.path.split(input_map)
-        map_name = name_split[1]
-        map_name = map_name.split(".")[0]
-        save_path = os.path.join(save_path, map_name)
-        mkdir(save_path)
+            fold = params['fold']  # specify use which fold Model based on real map
+            if type == 3:
+                save_path = os.path.join(save_path, "Fold%d_Model_Result" % fold)
+                mkdir(save_path)
+            name_split = os.path.split(input_map)
+            map_name = name_split[1]
+            map_name = map_name.split(".")[0]
+            save_path = os.path.join(save_path, map_name)
+            mkdir(save_path)
         # reform the map voxel size to 1A instead of experimental voxel size
         from process_map.Reform_Map_Voxel import Reform_Map_Voxel,Reform_Map_Voxel_Final
 
@@ -222,13 +224,14 @@ if __name__ == "__main__":
         factor = 2  # reduce 4 to 2 to get more data
         save_path0 = getOutputPath(params["output_folder"], 2)
         mkdir(save_path0)
-        save_path0 = os.path.join(save_path0, indicate)
-        mkdir(save_path0)
-        name_split = os.path.split(input_map)
-        map_name = name_split[1]
-        map_name = map_name.split(".")[0]
-        save_path0 = os.path.join(save_path0, map_name)
-        mkdir(save_path0)
+        if not params['output_folder']:
+            save_path0 = os.path.join(save_path0, indicate)
+            mkdir(save_path0)
+            name_split = os.path.split(input_map)
+            map_name = name_split[1]
+            map_name = map_name.split(".")[0]
+            save_path0 = os.path.join(save_path0, map_name)
+            mkdir(save_path0)
         from process_map.Reform_Map_Voxel import Reform_Map_Voxel, Reform_Map_Voxel_Final
 
         output_map = os.path.join(save_path0, map_name + ".mrc")
@@ -284,13 +287,14 @@ if __name__ == "__main__":
         factor = 2  # reduce 4 to 2 to get more data
         save_path0 = getOutputPath(params["output_folder"], 3)
         mkdir(save_path0)
-        save_path0 = os.path.join(save_path0, indicate)
-        mkdir(save_path0)
-        name_split = os.path.split(input_map)
-        map_name = name_split[1]
-        map_name = map_name.split(".")[0]
-        save_path0 = os.path.join(save_path0, map_name)
-        mkdir(save_path0)
+        if not params['output_folder']:
+            save_path0 = os.path.join(save_path0, indicate)
+            mkdir(save_path0)
+            name_split = os.path.split(input_map)
+            map_name = name_split[1]
+            map_name = map_name.split(".")[0]
+            save_path0 = os.path.join(save_path0, map_name)
+            mkdir(save_path0)
         from process_map.Reform_Map_Voxel import Reform_Map_Voxel, Reform_Map_Voxel_Final
 
         output_map = os.path.join(save_path0, map_name + ".mrc")

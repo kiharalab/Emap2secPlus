@@ -113,6 +113,8 @@ if __name__ == "__main__":
             mkdir(save_path)
         else:
             map_name="input"
+        from process_map.Unify_Map import Unify_Map
+        input_map = Unify_Map(input_map,os.path.join(save_path,map_name+"_unified.mrc"))
         # reform the map voxel size to 1A instead of experimental voxel size
         from process_map.Reform_Map_Voxel import Reform_Map_Voxel,Reform_Map_Voxel_Final
         output_map=os.path.join(save_path,map_name+".mrc")
@@ -178,6 +180,8 @@ if __name__ == "__main__":
         else:
             map_name="input"
         # reform the map voxel size to 1A instead of experimental voxel size
+        from process_map.Unify_Map import Unify_Map
+        input_map = Unify_Map(input_map,os.path.join(save_path,map_name+"_unified.mrc"))
         from process_map.Reform_Map_Voxel import Reform_Map_Voxel,Reform_Map_Voxel_Final
 
         output_map = os.path.join(save_path, map_name + ".mrc")
@@ -238,6 +242,8 @@ if __name__ == "__main__":
             mkdir(save_path0)
         else:
             map_name="input"
+        from process_map.Unify_Map import Unify_Map
+        input_map = Unify_Map(input_map,os.path.join(save_path0,map_name+"_unified.mrc"))
         from process_map.Reform_Map_Voxel import Reform_Map_Voxel, Reform_Map_Voxel_Final
 
         output_map = os.path.join(save_path0, map_name + ".mrc")
@@ -303,6 +309,8 @@ if __name__ == "__main__":
             mkdir(save_path0)
         else:
             map_name="input"
+        from process_map.Unify_Map import Unify_Map
+        input_map = Unify_Map(input_map,os.path.join(save_path0,map_name+"_unified.mrc"))
         from process_map.Reform_Map_Voxel import Reform_Map_Voxel, Reform_Map_Voxel_Final
 
         output_map = os.path.join(save_path0, map_name + ".mrc")
@@ -384,6 +392,8 @@ if __name__ == "__main__":
             save_path0 = getOutputPath(params["output_folder"], 4)
             mkdir(save_path0)
             map_name="input"
+        from process_map.Unify_Map import Unify_Map
+        input_map = Unify_Map(input_map,os.path.join(save_path0,map_name+"_unified.mrc"))
         from process_map.Reform_Map_Voxel import Reform_Map_Voxel, Reform_Map_Voxel_Final
 
         output_map = os.path.join(save_path0, map_name + ".mrc")

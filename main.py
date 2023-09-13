@@ -84,7 +84,8 @@ if __name__ == "__main__":
         input_map=os.path.abspath(input_map)
         type=params['type']
         choose = params['gpu']
-        os.environ["CUDA_VISIBLE_DEVICES"] = choose
+        if choose is not None:
+            os.environ["CUDA_VISIBLE_DEVICES"] = choose
         if type==0:
             indicate='SIMU6'
         elif type==1:
@@ -150,7 +151,8 @@ if __name__ == "__main__":
         pdb_path=os.path.abspath(input_pdb)
         type = params['type']
         choose = params['gpu']
-        os.environ["CUDA_VISIBLE_DEVICES"] = choose
+        if choose is not None:
+            os.environ["CUDA_VISIBLE_DEVICES"] = choose
         if type == 0:
             indicate = 'SIMU6'
         elif type == 1:
@@ -226,7 +228,8 @@ if __name__ == "__main__":
         input_map = os.path.abspath(input_map)
         type = params['type']
         choose = params['gpu']
-        os.environ["CUDA_VISIBLE_DEVICES"] = choose
+        if choose is not None:
+            os.environ["CUDA_VISIBLE_DEVICES"] = choose
         assert type==3
         indicate="REAL"
         factor = 2  # reduce 4 to 2 to get more data
@@ -293,7 +296,8 @@ if __name__ == "__main__":
         pdb_path = os.path.abspath(input_pdb)
         type = params['type']
         choose = params['gpu']
-        os.environ["CUDA_VISIBLE_DEVICES"] = choose
+        if choose is not None:
+            os.environ["CUDA_VISIBLE_DEVICES"] = choose
         assert type == 3
         indicate = "REAL"
         factor = 2  # reduce 4 to 2 to get more data
@@ -378,7 +382,8 @@ if __name__ == "__main__":
         input_map = os.path.abspath(input_map)
         type = params['type']
         choose = params['gpu']
-        os.environ["CUDA_VISIBLE_DEVICES"] = choose
+        if choose is not None:
+            os.environ["CUDA_VISIBLE_DEVICES"] = choose
         assert type == 3
         indicate = "REAL"
         factor = 2  # reduce 4 to 2 to get more data

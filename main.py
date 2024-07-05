@@ -103,9 +103,8 @@ if __name__ == "__main__":
         if not params['output_folder']:
             save_path = os.path.join(save_path, indicate)
             mkdir(save_path)
-            fold = params['fold']  # specify use which fold Model based on real map
             if type==3:
-                save_path = os.path.join(save_path, "Fold%d_Model_Result"%fold)
+                save_path = os.path.join(save_path, "Fold%d_Model_Result" % params['fold'])
                 mkdir(save_path)
             name_split=os.path.split(input_map)
             map_name=name_split[1]
@@ -134,7 +133,7 @@ if __name__ == "__main__":
         batch_size=params['batch_size']
         from evaluate.Predict_Phase1 import Predict_Phase1
         phase1_pred_dict,phase1_pred_file,step1_pred_file=\
-            execute_with_exceptions(Predict_Phase1, save_path,map_name,input_path,indicate,fold,batch_size,params)
+            execute_with_exceptions(Predict_Phase1, save_path,map_name,input_path,indicate,params['fold'],batch_size,params)
         #visualize phase 1
         from evaluate.Visualize_Prediction import Visualize_Prediction,Visualize_Confident_Prediction
         Visualize_Prediction(save_path, map_name, step1_pred_file,  factor, 'Phase1')
@@ -170,9 +169,8 @@ if __name__ == "__main__":
         if not params['output_folder']:
             save_path = os.path.join(save_path, indicate)
             mkdir(save_path)
-            fold = params['fold']  # specify use which fold Model based on real map
             if type == 3:
-                save_path = os.path.join(save_path, "Fold%d_Model_Result" % fold)
+                save_path = os.path.join(save_path, "Fold%d_Model_Result" % params['fold'])
                 mkdir(save_path)
             name_split = os.path.split(input_map)
             map_name = name_split[1]
@@ -211,7 +209,7 @@ if __name__ == "__main__":
         from evaluate.Predict_Phase1 import Predict_Phase1
 
         phase1_pred_dict, phase1_pred_file,step1_pred_file = \
-            execute_with_exceptions(Predict_Phase1, save_path, map_name, input_path, indicate, fold, batch_size,params)
+            execute_with_exceptions(Predict_Phase1, save_path, map_name, input_path, indicate, params['fold'], batch_size,params)
 
         Visualize_Prediction_WithStructure(save_path, map_name, step1_pred_file, factor, real_loc_refer, 'Phase1')
         Visualize_Confident_Prediction_WithStructure(save_path, map_name, step1_pred_file, factor, real_loc_refer,

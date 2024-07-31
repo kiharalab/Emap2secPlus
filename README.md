@@ -91,31 +91,14 @@ Pymol(for visualization): https://pymol.org/2/
 git clone git@github.com:kiharalab/Emap2secPlus.git && cd Emap2secPlus
 ```
 
-### 3. Build dependencies.   
-You have two options to install dependency on your computer:
-#### 3.1 Install with pip and python(Ver 3.6.9).
-##### 3.1.1[`install pip`](https://pip.pypa.io/en/stable/installing/).
-##### 3.1.2  Install dependency in command line.
-```
-pip3 install -r requirements.txt --user
-```
-If you encounter any errors, you can install each library one by one:
-```
-pip3 install mrcfile==1.1.2
-pip3 install numpy==1.18.5
-pip3 install numba
-pip3 install torch==1.1.0
-pip3 install scipy==1.4.1
-pip3 install scikit-learn
-```
-
-#### 3.2 Install with anaconda
-##### 3.2.1 [`install conda`](https://docs.conda.io/projects/conda/en/latest/user-guide/install/macos.html). 
-##### 3.2.2 Install dependency in command line
+### 3. Build dependencies and install with anaconda
+#### 3.1 [`install conda`](https://docs.conda.io/projects/conda/en/latest/user-guide/install/macos.html). 
+#### 3.2 Install dependency in command line
 ```
 conda create -n Emap python=3.6.9
 conda activate Emap
-pip install -r requirements.txt 
+conda install conda-forge::gcc_linux-64=14.1
+pip install -r requirements.txt
 conda install pytorch==1.1.0 cudatoolkit=10.0 -c pytorch
 ```
 Each time when you want to run my code, simply activate the environment by

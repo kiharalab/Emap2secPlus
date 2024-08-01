@@ -97,7 +97,7 @@ git clone git@github.com:kiharalab/Emap2secPlus.git && cd Emap2secPlus
 ```
 conda create -n Emap python=3.6.9
 conda activate Emap
-conda install conda-forge::gcc_linux-64=14.1
+conda install gcc=14.1
 pip install -r requirements.txt
 conda install pytorch==1.1.0 cudatoolkit=10.0 -c pytorch
 ```

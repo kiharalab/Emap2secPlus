@@ -31,12 +31,27 @@
 # along with this program.  If not, see https://www.gnu.org/licenses/gpl-3.0.en.html.
 
 import os
+import warnings
 import torch
 from ops.os_operation import mkdir
 import numpy as np
 from torch.autograd import Variable
 from torch import nn
 import torch.nn.functional as F
+
+# Suppress SourceChangeWarning when loading models across PyTorch versions
+warnings.filterwarnings('ignore', category=torch.serialization.SourceChangeWarning)
+
+def patch_avgpool_divisor_override(model):
+    """
+    Patch AvgPool3d layers to add divisor_override attribute if missing.
+    This fixes compatibility issues when loading models from older PyTorch versions.
+    """
+    for module in model.modules():
+        if isinstance(module, nn.AvgPool3d):
+            if not hasattr(module, 'divisor_override'):
+                module.divisor_override = None
+    return model
 
 def Predict_Phase2(save_path,map_name,Phase1_Final_Prediction_Dict,indicate,fold,batch_size):
     input_size = 11
@@ -49,7 +64,8 @@ def Predict_Phase2(save_path,map_name,Phase1_Final_Prediction_Dict,indicate,fold
         model_path = os.path.join(model_path, 'Fold' + str(fold))
     p2_path = os.path.join(model_path, 'Phase2_Model.pkl')
     # actually phase1 Model
-    p2_model = torch.load(p2_path)
+    p2_model = torch.load(p2_path, map_location='cpu', weights_only=False)
+    p2_model = patch_avgpool_divisor_override(p2_model)
     p2_model = p2_model.cuda()
     p2_model = nn.DataParallel(p2_model, device_ids=None)
     p2_model.eval()

@@ -1,6 +1,5 @@
-mrcfile==1.1.2
-numpy==1.18.5
+mrcfile
+numpy<2
 numba
-torch==1.1.0
-scipy==1.4.1
+scipy
 scikit-learn

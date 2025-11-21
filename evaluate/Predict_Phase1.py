@@ -32,12 +32,27 @@
 
 import os
 import sys
+import warnings
 import torch
 import numpy as np
 from torch.autograd import Variable
 from torch import nn
 import torch.nn.functional as F
 from scipy.special import softmax
+
+# Suppress SourceChangeWarning when loading models across PyTorch versions
+warnings.filterwarnings('ignore', category=torch.serialization.SourceChangeWarning)
+
+def patch_avgpool_divisor_override(model):
+    """
+    Patch AvgPool3d layers to add divisor_override attribute if missing.
+    This fixes compatibility issues when loading models from older PyTorch versions.
+    """
+    for module in model.modules():
+        if isinstance(module, nn.AvgPool3d):
+            if not hasattr(module, 'divisor_override'):
+                module.divisor_override = None
+    return model
 
 # Importing error codes from main
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -70,38 +85,44 @@ def Predict_Phase1(save_path,map_name,input_path,indicate,fold,batch_size,params
     if indicate=="REAL":
         model_path=os.path.join(model_path,'Fold'+str(fold))
     cmodel_path = os.path.join(model_path, "Coil_Model.pkl")
-    coil_model = torch.load(cmodel_path)
+    coil_model = torch.load(cmodel_path, map_location='cpu', weights_only=False)
+    coil_model = patch_avgpool_divisor_override(coil_model)
     coil_model = coil_model.cuda()
     coil_model = nn.DataParallel(coil_model, device_ids=None)
     coil_model.eval()
     # beta Model
     bmodel_path = os.path.join(model_path, "Beta_Model.pkl")
-    beta_model = torch.load(bmodel_path)
+    beta_model = torch.load(bmodel_path, map_location='cpu', weights_only=False)
+    beta_model = patch_avgpool_divisor_override(beta_model)
     beta_model = beta_model.cuda()
     beta_model = nn.DataParallel(beta_model, device_ids=None)
     beta_model.eval()
     # alpha Model
     amodel_path = os.path.join(model_path, "Alpha_Model.pkl")
-    alpha_model = torch.load(amodel_path)
+    alpha_model = torch.load(amodel_path, map_location='cpu', weights_only=False)
+    alpha_model = patch_avgpool_divisor_override(alpha_model)
     alpha_model = alpha_model.cuda()
     alpha_model = nn.DataParallel(alpha_model, device_ids=None)
     alpha_model.eval()
     # drna Model
     dmodel_path = os.path.join(model_path, "DRNA_Model.pkl")
-    drna_model = torch.load(dmodel_path)
+    drna_model = torch.load(dmodel_path, map_location='cpu', weights_only=False)
+    drna_model = patch_avgpool_divisor_override(drna_model)
     drna_model = drna_model.cuda()
     drna_model = nn.DataParallel(drna_model, device_ids=None)
     drna_model.eval()
     #multi class Model
     combine_path = os.path.join(model_path, "All_Model.pkl")
-    all_model = torch.load(combine_path)
+    all_model = torch.load(combine_path, map_location='cpu', weights_only=False)
+    all_model = patch_avgpool_divisor_override(all_model)
     all_model = all_model.cuda()
     all_model = nn.DataParallel(all_model, device_ids=None)
     all_model.eval()
 
     combine_path = os.path.join(model_path, 'Combine_Modelall.pkl')
     # actually phase1 Model
-    cb_model = torch.load(combine_path)
+    cb_model = torch.load(combine_path, map_location='cpu', weights_only=False)
+    cb_model = patch_avgpool_divisor_override(cb_model)
     cb_model = cb_model.cuda()
     cb_model = nn.DataParallel(cb_model, device_ids=None)
     cb_model.eval()

@@ -92,21 +92,21 @@ git clone git@github.com:kiharalab/Emap2secPlus.git && cd Emap2secPlus
 ```
 
 ### 3. Build dependencies and install with anaconda
-#### 3.1 [`install conda`](https://docs.conda.io/projects/conda/en/latest/user-guide/install/macos.html). 
+#### 3.1 [`install conda`](https://docs.conda.io/projects/conda/en/latest/user-guide/install/macos.html).
 #### 3.2 Install dependency in command line
 ```
-conda create -n Emap python=3.6.9
+conda create -n Emap python=3.8
 conda activate Emap
 conda install gcc=14.1
 pip install -r requirements.txt
-conda install pytorch==1.1.0 cudatoolkit=10.0 -c pytorch
+pip install torch==1.13.1+cu117 torchvision==0.14.1+cu117 torchaudio==0.13.1 --extra-index-url https://download.pytorch.org/whl/cu117
 ```
 Each time when you want to run my code, simply activate the environment by
 ```
 conda activate Emap
-conda deactivate(If you want to exit) 
+conda deactivate(If you want to exit)
 ```
-Note that CUDA 10 is needed for the software. If your system-wide installation has a different version, you might need to intall CUDA 10 with conda if you want to keep the current system version.
+Note that CUDA 11 is needed for the software. Make sure your GPU supports CUDA 11.
 
 #### 4. Downloading the model files and example files.
 Due to the data quota limit of github, our model can't be kept in this repo. Please download them [here](https://kiharalab.org/emsuites/emap2secplus_model/) and put them in the Emap2secPlus directory. Two different types of model are included here. best_model.tar.gz includes all trained models based on author recommended contour level. nocontour_best_model.tar.gz	includes all trained models without the author contour level.
